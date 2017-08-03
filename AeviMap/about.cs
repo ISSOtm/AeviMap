@@ -13,7 +13,7 @@ namespace AeviMap
     {
         public about()
         {
-            string LicenseString = "\r\n\r\nLicensed under the Apache License, Version 2.0.\r\nSee source code for info.";
+            string LicenseString = "\r\n\r\nLicensed under the Apache License, Version 2.0.\r\nSee source code for info.\nhttps://github.com/ISSOtm/AeviMap";
 
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);
