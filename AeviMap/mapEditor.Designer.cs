@@ -34,7 +34,10 @@
             this.LoadROMItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMapItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.CloseAeviMapItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutAeviMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapRenderer = new System.Windows.Forms.PictureBox();
             this.selectMapID = new System.Windows.Forms.NumericUpDown();
             this.selLabel = new System.Windows.Forms.Label();
@@ -45,11 +48,6 @@
             this.blockPickerPanel = new System.Windows.Forms.Panel();
             this.blockPicker = new System.Windows.Forms.PictureBox();
             this.openMapDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutAeviMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshGFXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectMapID)).BeginInit();
@@ -62,7 +60,6 @@
             // 
             this.menuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
-            this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuBar.Location = new System.Drawing.Point(0, 0);
             this.menuBar.Name = "menuBar";
@@ -85,7 +82,7 @@
             // LoadROMItem
             // 
             this.LoadROMItem.Name = "LoadROMItem";
-            this.LoadROMItem.Size = new System.Drawing.Size(152, 22);
+            this.LoadROMItem.Size = new System.Drawing.Size(139, 22);
             this.LoadROMItem.Text = "Load ROM...";
             this.LoadROMItem.ToolTipText = "Load Aevilia GB ROM to edit";
             this.LoadROMItem.Click += new System.EventHandler(this.OpenROM);
@@ -93,24 +90,44 @@
             // loadMapItem
             // 
             this.loadMapItem.Name = "loadMapItem";
-            this.loadMapItem.Size = new System.Drawing.Size(152, 22);
+            this.loadMapItem.Size = new System.Drawing.Size(139, 22);
             this.loadMapItem.Text = "Load map...";
             this.loadMapItem.Click += new System.EventHandler(this.LoadMapFromBlk);
             // 
             // saveMapItem
             // 
             this.saveMapItem.Name = "saveMapItem";
-            this.saveMapItem.Size = new System.Drawing.Size(152, 22);
+            this.saveMapItem.Size = new System.Drawing.Size(139, 22);
             this.saveMapItem.Text = "Save map...";
             this.saveMapItem.ToolTipText = "Save the current map to a .blk file";
             this.saveMapItem.Click += new System.EventHandler(this.SaveMap);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+            // 
             // CloseAeviMapItem
             // 
             this.CloseAeviMapItem.Name = "CloseAeviMapItem";
-            this.CloseAeviMapItem.Size = new System.Drawing.Size(152, 22);
+            this.CloseAeviMapItem.Size = new System.Drawing.Size(139, 22);
             this.CloseAeviMapItem.Text = "Close";
             this.CloseAeviMapItem.Click += new System.EventHandler(this.closeApp);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutAeviMapToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutAeviMapToolStripMenuItem
+            // 
+            this.aboutAeviMapToolStripMenuItem.Name = "aboutAeviMapToolStripMenuItem";
+            this.aboutAeviMapToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aboutAeviMapToolStripMenuItem.Text = "About AeviMap";
+            this.aboutAeviMapToolStripMenuItem.Click += new System.EventHandler(this.aboutAeviMapToolStripMenuItem_Click);
             // 
             // mapRenderer
             // 
@@ -207,41 +224,6 @@
             this.openMapDialog.Filter = "Map block files (*.blk)|*.blk|All files|*.*";
             this.openMapDialog.Title = "Load map from file";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutAeviMapToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutAeviMapToolStripMenuItem
-            // 
-            this.aboutAeviMapToolStripMenuItem.Name = "aboutAeviMapToolStripMenuItem";
-            this.aboutAeviMapToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.aboutAeviMapToolStripMenuItem.Text = "About AeviMap";
-            this.aboutAeviMapToolStripMenuItem.Click += new System.EventHandler(this.aboutAeviMapToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshGFXToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // refreshGFXToolStripMenuItem
-            // 
-            this.refreshGFXToolStripMenuItem.Name = "refreshGFXToolStripMenuItem";
-            this.refreshGFXToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.refreshGFXToolStripMenuItem.Text = "Refresh GFX";
-            this.refreshGFXToolStripMenuItem.Click += new System.EventHandler(this.refreshGFXToolStripMenuItem_Click);
-            // 
             // AeviMapMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -288,8 +270,6 @@
         private System.Windows.Forms.OpenFileDialog openMapDialog;
         private System.Windows.Forms.ToolStripMenuItem loadMapItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshGFXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
     }

@@ -1004,10 +1004,5 @@ namespace AeviMap
             about abt = new about();
             abt.ShowDialog();
         }
-
-        private void refreshGFXToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //refresh gfx
-        }
     }
 }
