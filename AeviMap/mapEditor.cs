@@ -379,6 +379,27 @@ namespace AeviMap
         /// </summary>
         private void OpenROM()
         {
+            if(unsavedChanges)
+            {
+                DialogResult shallSaveChanges = MessageBox.Show("There are unsaved changes ! Do you wish to change them before loading a ROM ?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
+                if(shallSaveChanges == DialogResult.Cancel)
+                {
+                    return;
+                }
+                else if(shallSaveChanges == DialogResult.Yes)
+                {
+                    SaveMap();
+                    if(unsavedChanges)
+                    {
+                        DialogResult okayDafuq = MessageBox.Show("You didn't save your changes. Load the ROM anyways ?", "Unsaved changes", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                        if (okayDafuq == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
             DialogResult shallOpen = openROMDialog.ShowDialog();
             if (shallOpen == DialogResult.OK)
             {
@@ -387,7 +408,8 @@ namespace AeviMap
                 loadedMapROMBank = 0;
                 mapRenderer.Invalidate();
                 blockPicker.Invalidate();
-//                loadedfile.Text = savediag.FileName;
+                // loadedfile.Text = savediag.FileName;
+                unsavedChanges = false;
             }
         }
 
@@ -708,8 +730,8 @@ namespace AeviMap
                     SaveMap();
                     if(unsavedChanges)
                     {
-                        DialogResult thisIsConfusing = MessageBox.Show("You didn't save your changes !", "Still unsaved changes", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-                        if(thisIsConfusing == DialogResult.Cancel)
+                        DialogResult thisIsConfusing = MessageBox.Show("You didn't save your changes !", "Still unsaved changes", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                        if(thisIsConfusing == DialogResult.No)
                         {
                             mapLoadingFailed = true;
                             return;
