@@ -7,3 +7,4 @@ D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Release\AeviMap.
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Release\AeviMap.csproj.GenerateResource.Cache
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Release\AeviMap.exe
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Release\AeviMap.pdb
+D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Release\AeviMap.csprojResolveAssemblyReference.cache

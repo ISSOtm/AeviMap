@@ -749,12 +749,16 @@ namespace AeviMap
             mapPointer += 9;
             // Skip over interactions & num of such
             mapPointer += (UInt16)(1 + 9 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+            byte numOfNPCs = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
             // Skip over NPCs & num of
-            mapPointer += (UInt16)(1 + 12 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
-            // Skip over NPC scripts & num of
-            mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
-            // Skip over NPC tiles & num of
-            mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+            mapPointer += (UInt16)(1 + 12 * numOfNPCs);
+            if(numOfNPCs != 0)
+            {
+                // Skip over NPC scripts & num of
+                mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+                // Skip over NPC tiles & num of
+                mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+            }
             // Skip over warp-tos & num of
             mapPointer += (UInt16)(1 + 16 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
 
@@ -878,7 +882,7 @@ namespace AeviMap
             byte[] blockData = new byte[blockDataSize];
             for(var i = 0; i < blockDataSize; i++)
             {
-                blockData[i] = blocks[ID, i];
+                blockData[i] = blocks[ID % 64, i];
             }
             // That Marshal.UnsafeBlahBlahBlah comes from https://stackoverflow.com/questions/21555394/how-to-create-bitmap-from-byte-array
             return new Bitmap(16, 16, 16 * 2, System.Drawing.Imaging.PixelFormat.Format16bppRgb555, Marshal.UnsafeAddrOfPinnedArrayElement(blockData, 0));
