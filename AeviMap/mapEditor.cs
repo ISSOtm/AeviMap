@@ -581,6 +581,12 @@ namespace AeviMap
                 }
             }
 
+            // Skip over tile attribute data (256 * 1 byte)
+            tilesetPointer += 256;
+
+            // Skip over tile animation data (1 byte for number of structs, 5 bytes per struct)
+            tilesetPointer += (UInt16)(ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0] * 5 + 1);
+
             // Load palettes
             var palettePointers = ReadBytesFromROM(tilesetROMBank, (UInt16)(tilesetPointer - 2 * 2), 8 * 2); // Get pointers, plus two slots that will be filled manually
             palettePointers[0] = (byte)palette0Ptr; // Set default palette 0 pointer
