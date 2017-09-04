@@ -82,7 +82,8 @@
             // LoadROMItem
             // 
             this.LoadROMItem.Name = "LoadROMItem";
-            this.LoadROMItem.Size = new System.Drawing.Size(139, 22);
+            this.LoadROMItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.LoadROMItem.Size = new System.Drawing.Size(182, 22);
             this.LoadROMItem.Text = "Load ROM...";
             this.LoadROMItem.ToolTipText = "Load Aevilia GB ROM to edit";
             this.LoadROMItem.Click += new System.EventHandler(this.OpenROM);
@@ -90,14 +91,16 @@
             // loadMapItem
             // 
             this.loadMapItem.Name = "loadMapItem";
-            this.loadMapItem.Size = new System.Drawing.Size(139, 22);
+            this.loadMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.loadMapItem.Size = new System.Drawing.Size(182, 22);
             this.loadMapItem.Text = "Load map...";
             this.loadMapItem.Click += new System.EventHandler(this.LoadMapFromBlk);
             // 
             // saveMapItem
             // 
             this.saveMapItem.Name = "saveMapItem";
-            this.saveMapItem.Size = new System.Drawing.Size(139, 22);
+            this.saveMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveMapItem.Size = new System.Drawing.Size(182, 22);
             this.saveMapItem.Text = "Save map...";
             this.saveMapItem.ToolTipText = "Save the current map to a .blk file";
             this.saveMapItem.Click += new System.EventHandler(this.SaveMap);
@@ -105,12 +108,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(179, 6);
             // 
             // CloseAeviMapItem
             // 
             this.CloseAeviMapItem.Name = "CloseAeviMapItem";
-            this.CloseAeviMapItem.Size = new System.Drawing.Size(139, 22);
+            this.CloseAeviMapItem.Size = new System.Drawing.Size(182, 22);
             this.CloseAeviMapItem.Text = "Close";
             this.CloseAeviMapItem.Click += new System.EventHandler(this.closeApp);
             // 
@@ -125,7 +128,8 @@
             // aboutAeviMapToolStripMenuItem
             // 
             this.aboutAeviMapToolStripMenuItem.Name = "aboutAeviMapToolStripMenuItem";
-            this.aboutAeviMapToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aboutAeviMapToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.aboutAeviMapToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.aboutAeviMapToolStripMenuItem.Text = "About AeviMap";
             this.aboutAeviMapToolStripMenuItem.Click += new System.EventHandler(this.aboutAeviMapToolStripMenuItem_Click);
             // 

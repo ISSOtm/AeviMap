@@ -33,8 +33,8 @@ namespace AeviMap
     public partial class AeviMapMainWindow : Form
     {
         // Reference vars, update with ROM
-        public static byte numOfTilesets = 3;
-        public static byte numOfMaps = 3;
+        public static byte numOfTilesets = 4;
+        public static byte numOfMaps = 5;
 
         public static byte numOfBlocks = 64;
 
@@ -46,8 +46,7 @@ namespace AeviMap
         private static UInt16 tilesetPtrsPtr = (UInt16)(tilesetBanksPtr + numOfTilesets);
         private static byte palettesBank = 1;
 
-        private static UInt16 palette0Ptr = 0x5064;
-        private static UInt16 palette1Ptr = (UInt16)(palette0Ptr + 3);
+        private static UInt16 palette0Ptr = 0x51AC; // Pointer to EvieDefaultPalette
 
         private static byte sizeOfBlock = 64; // Size, in pixels, of a block
         private static UInt16 blockDataSize = 16 * 16 * 2; // Size, in bytes, of a block's BMP data
@@ -64,7 +63,6 @@ namespace AeviMap
             "tilesetPtrsPtr",
             "palettesBank",
             "palette0Ptr",
-            "palette1Ptr",
             "sizeOfBlock",
             "blockDataSize"
         };
@@ -91,7 +89,6 @@ namespace AeviMap
             true,
             true,
             false,
-            true,
             true,
             false,
             false
@@ -202,8 +199,6 @@ namespace AeviMap
                     return palettesBank;
                 case "palette0Ptr":
                     return palette0Ptr;
-                case "palette1Ptr":
-                    return palette1Ptr;
                 case "sizeOfBlock":
                     return sizeOfBlock;
                 case "blockDataSize":
@@ -249,9 +244,6 @@ namespace AeviMap
                     break;
                 case "palette0Ptr":
                     palette0Ptr = propValue;
-                    break;
-                case "palette1Ptr":
-                    palette1Ptr = propValue;
                     break;
                 case "sizeOfBlock":
                     sizeOfBlock = (byte)propValue;
@@ -588,11 +580,9 @@ namespace AeviMap
             tilesetPointer += (UInt16)(ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0] * 5 + 1);
 
             // Load palettes
-            var palettePointers = ReadBytesFromROM(tilesetROMBank, (UInt16)(tilesetPointer - 2 * 2), 8 * 2); // Get pointers, plus two slots that will be filled manually
+            var palettePointers = ReadBytesFromROM(tilesetROMBank, (UInt16)(tilesetPointer - 2), 8 * 2); // Get pointers, plus two slots that will be filled manually
             palettePointers[0] = (byte)palette0Ptr; // Set default palette 0 pointer
             palettePointers[1] = (byte)(palette0Ptr >> 8);
-            palettePointers[2] = (byte)palette1Ptr; // Set default palette 1 pointer
-            palettePointers[3] = (byte)(palette1Ptr >> 8);
             var palettes = new byte[8,4,2]; // Make array
             for(uint i = 0; i < 8; i++) // Retrieve palettes pointed to
             {

@@ -27,3 +27,4 @@ D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.ab
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.AeviMapMainWindow.resources
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.Properties.Resources.resources
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.csproj.GenerateResource.Cache
+D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Debug\AeviMap.about.resources
