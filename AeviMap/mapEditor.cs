@@ -462,7 +462,7 @@ namespace AeviMap
         {
             if (addr >= 0x8000 || addr + size > 0x8000)
             {
-                MessageBox.Show("Attempted to read " + size + " bytes from " + addr + " (decimal), which is impossible. The application is going to close.", "Bad read", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Attempted to read " + size + " bytes from 0x" + decToHex(addr) + ", which is impossible. The application is going to close.", "Bad read", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 Application.Exit();
             }
 
