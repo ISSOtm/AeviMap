@@ -34,7 +34,7 @@ namespace AeviMap
     {
         // Reference vars, update with ROM
         public static byte numOfTilesets = 4;
-        public static byte numOfMaps = 5;
+        public static byte numOfMaps = 7;
 
         public static byte numOfBlocks = 64;
 
@@ -766,14 +766,14 @@ namespace AeviMap
             // Skip over map properties, music ID, tileset ID, script (2 bytes), width, height, and loading script (2 bytes)
             mapPointer += 9;
             // Skip over interactions & num of such
-            mapPointer += (UInt16)(1 + 9 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+            mapPointer += (UInt16)(1 + 17 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
             byte numOfNPCs = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
             // Skip over NPCs & num of
             mapPointer += (UInt16)(1 + 12 * numOfNPCs);
             if(numOfNPCs != 0)
             {
-                // Skip over NPC scripts & num of
-                mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+                // Skip over NPC scripts ptr & num of
+                mapPointer += 3;
                 // Skip over NPC tiles & num of
                 mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
             }
@@ -882,7 +882,7 @@ namespace AeviMap
                 break;
 
                 case MouseButtons.Right:
-                    selectedBlock = loadedMapBlocks[hoveredBlockY * loadedMapWidth + hoveredBlockX];
+                    ModifyPickedBlock(loadedMapBlocks[hoveredBlockY * loadedMapWidth + hoveredBlockX]);
                 break;
             }
         }
