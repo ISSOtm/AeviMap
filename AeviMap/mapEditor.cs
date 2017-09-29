@@ -531,27 +531,62 @@ namespace AeviMap
             var tilesetPointer = (UInt16)(tilesetPointerRaw[1] * 256 + tilesetPointerRaw[0]);
 
             // Load tiles
-            var numOfTiles = ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0]; // Get number of tiles
-            tilesetPointer++; // Skip over the number we just read
+            byte numOfTiles = 0;
+            UInt16 numOfTilesInBank = 0;
+            byte bank = 0;
             var tiles = new byte[257, 16];
-            for(uint i = 0; i < numOfTiles; i++)
+            while (bank < 2)
             {
-                var tile = ReadBytesFromROM(tilesetROMBank, tilesetPointer, 16); // Read one tile from ROM
-                tilesetPointer += 16; // Skip over the tile
-                for(uint j = 0; j < 16; j++)
+                numOfTiles = ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0]; // Get number of tiles
+                tilesetPointer++; // Skip over the number we just read
+                if(numOfTiles != 0 && numOfTilesInBank != 128)
                 {
-                    tiles[i, j] = tile[j]; // Copy the tile's data into the array
+                    byte bankOfTiles;
+                    UInt16 ptrToTiles;
+                    bankOfTiles = ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0];
+                    tilesetPointer++;
+                    var rawPtr = ReadBytesFromROM(tilesetROMBank, tilesetPointer, 2);
+                    ptrToTiles = (UInt16)(rawPtr[1] * 256 + rawPtr[0]);
+                    tilesetPointer += 2;
+
+                    numOfTilesInBank += numOfTiles;
+                    if(numOfTilesInBank > 128)
+                    {
+                        MessageBox.Show("Tileset loads too many tiles !\n(Attempting to ignore unnecessary tiles)", "Invalid tileset", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                        numOfTiles -= (byte)(numOfTilesInBank - 256);
+                        numOfTilesInBank = 128;
+                    }
+
+                    for (uint i = 0; i < numOfTiles; i++)
+                    {
+                        var tileID = (bank == 0) ? i : i + 128;
+
+                        var tile = ReadBytesFromROM(bankOfTiles, ptrToTiles, 16); // Read one tile from ROM
+                        ptrToTiles += 16; // Skip over the tile
+
+                        for (uint j = 0; j < 16; j++)
+                        {
+                            tiles[tileID, j] = tile[j]; // Copy the tile's data into the array
+                        }
+                    }
                 }
-            }
-            for(uint i = numOfTiles; i < 256; i++) // The game doesn't clear uninitialized tiles, so give them a checkerboard pattern to say "WARNING"
-            {
-                for(uint j = 0; j < 4; j++)
+                else
                 {
-                    // X = color 3, . = color 0, to create contrast
-                    tiles[i, j * 4]     = 0xAA;
-                    tiles[i, j * 4 + 1] = 0xAA; // X.X.X.X.
-                    tiles[i, j * 4 + 2] = 0x55; // .X.X.X.X
-                    tiles[i, j * 4 + 3] = 0x55;
+                    for (uint i = numOfTilesInBank; i < 128; i++) // The game doesn't clear uninitialized tiles, so give them a checkerboard pattern to say "WARNING"
+                    {
+                        var tileID = (bank == 0) ? i : i + 128;
+                        for (uint j = 0; j < 4; j++)
+                        {
+                            // X = color 3, . = color 0, to create contrast
+                            tiles[tileID, j * 4] = 0xAA;
+                            tiles[tileID, j * 4 + 1] = 0xAA; // X.X.X.X.
+                            tiles[tileID, j * 4 + 2] = 0x55; // .X.X.X.X
+                            tiles[tileID, j * 4 + 3] = 0x55;
+                        }
+                    }
+
+                    numOfTilesInBank = 0;
+                    bank++;
                 }
             }
             // Set special tiles (those not loaded by the tileset)
@@ -580,7 +615,7 @@ namespace AeviMap
             tilesetPointer += (UInt16)(ReadBytesFromROM(tilesetROMBank, tilesetPointer, 1)[0] * 5 + 1);
 
             // Load palettes
-            var palettePointers = ReadBytesFromROM(tilesetROMBank, (UInt16)(tilesetPointer - 2), 8 * 2); // Get pointers, plus two slots that will be filled manually
+            var palettePointers = ReadBytesFromROM(tilesetROMBank, (UInt16)(tilesetPointer - 2), 8 * 2); // Get pointers, plus one slot that will be filled manually
             palettePointers[0] = (byte)palette0Ptr; // Set default palette 0 pointer
             palettePointers[1] = (byte)(palette0Ptr >> 8);
             var palettes = new byte[8,4,2]; // Make array
