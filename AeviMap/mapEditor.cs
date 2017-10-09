@@ -108,6 +108,7 @@ namespace AeviMap
 
         // Global vars
         private bool isROMLoaded = false;
+        private bool isMapLoaded = false;
         private byte[] ROM { get; set; } // Will contain a dump of the ROM
         private byte[,] blocks = new byte[numOfBlocks, blockDataSize]; // Will contain the bitmaps of all the tileset's blocks
         private byte loadedMapROMBank = 0;
@@ -549,6 +550,7 @@ namespace AeviMap
                     ptrToTiles = (UInt16)(rawPtr[1] * 256 + rawPtr[0]);
                     tilesetPointer += 2;
 
+                    var firstTileID = numOfTilesInBank;
                     numOfTilesInBank += numOfTiles;
                     if(numOfTilesInBank > 128)
                     {
@@ -559,7 +561,7 @@ namespace AeviMap
 
                     for (uint i = 0; i < numOfTiles; i++)
                     {
-                        var tileID = (bank == 0) ? i : i + 128;
+                        var tileID = firstTileID + (bank == 0 ? i : i + 128);
 
                         var tile = ReadBytesFromROM(bankOfTiles, ptrToTiles, 16); // Read one tile from ROM
                         ptrToTiles += 16; // Skip over the tile
@@ -801,16 +803,38 @@ namespace AeviMap
             // Skip over map properties, music ID, tileset ID, script (2 bytes), width, height, and loading script (2 bytes)
             mapPointer += 9;
             // Skip over interactions & num of such
-            mapPointer += (UInt16)(1 + 17 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+            byte numOfInteractions = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
+            mapPointer++;
+            for(byte i = 0; i < numOfInteractions; i++)
+            {
+                byte interactionType = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
+                mapPointer++;
+                // This bit of the interaction type signals if there's a flag dependency
+                if((interactionType & 0x80) != 0)
+                {
+                    // If so, the struct is actually 2 bytes larger
+                    mapPointer += 2;
+                }
+                mapPointer += 16;
+            }
             byte numOfNPCs = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
             // Skip over NPCs & num of
-            mapPointer += (UInt16)(1 + 12 * numOfNPCs);
+            mapPointer += (UInt16)(1 + 14 * numOfNPCs);
             if(numOfNPCs != 0)
             {
                 // Skip over NPC scripts ptr & num of
                 mapPointer += 3;
                 // Skip over NPC tiles & num of
-                mapPointer += (UInt16)(1 + 2 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
+                byte numOfNPCTiles = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
+                mapPointer++;
+                for (byte i = 0; i < numOfNPCTiles; i++)
+                {
+                    if (ReadBytesFromROM(mapROMBank, mapPointer, 1)[0] != 0)
+                    {
+                        mapPointer += 2;
+                    }
+                    mapPointer++;
+                }
             }
             // Skip over warp-tos & num of
             mapPointer += (UInt16)(1 + 16 * ReadBytesFromROM(mapROMBank, mapPointer, 1)[0]);
@@ -821,6 +845,7 @@ namespace AeviMap
             mapRenderer.Size = new Size(sizeOfBlock * loadedMapWidth, sizeOfBlock * loadedMapHeight);
 
             // Update both of these since the tileset has been reloaded
+            isMapLoaded = true;
             mapRenderer.Invalidate();
             blockPicker.Invalidate();
             mapLoadingFailed = false;
@@ -944,7 +969,7 @@ namespace AeviMap
         // Paint event to render the map
         private void RenderMap(object sender, PaintEventArgs e)
         {
-            if(loadedMapROMBank != 0)
+            if(isMapLoaded)
             {
                 Graphics gfx = e.Graphics;
                 for(byte y = 0; y < loadedMapHeight; y++)
@@ -969,7 +994,7 @@ namespace AeviMap
 
         private void RenderBlockPicker(object sender, PaintEventArgs e)
         {
-            if(loadedMapROMBank != 0)
+            if(isMapLoaded)
             {
                 Graphics gfx = e.Graphics;
                 for(byte y = 0; y < numOfBlocks; y++)
