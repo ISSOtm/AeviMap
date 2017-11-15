@@ -94,6 +94,11 @@ namespace AeviMap
             false
         };
 
+        private static byte[] fallbackTilesets = {
+            5, 3,
+            0xFF
+        };
+
 
         public AeviMapMainWindow()
         {
@@ -788,20 +793,49 @@ namespace AeviMap
             // Set this data if it's ever needed again
             loadedMapROMBank = mapROMBank;
 
-            // Read the map's tileset ID, script (2 bytes), width, and height
-            var essentialData = ReadBytesFromROM(mapROMBank, (UInt16)(mapPointer + 2), 5);
-            var tilesetID = essentialData[0];
-            loadedMapWidth = essentialData[3];
-            loadedMapHeight = essentialData[4];
+            // Start reading the map's data
+            mapPointer += 2; // Skip properties and music ID
 
-            // Load the map's tileset ID
+            // Read tileset ID
+            var tilesetType = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
+            mapPointer++;
+            byte tilesetID;
+            if(tilesetType == 0)
+            {
+                // Static tileset
+                tilesetID = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
+            } else {
+                // Dynamic tileset, find a fallback tileset
+                tilesetID = 0xFF; // Default value
+                for(var i = 0; fallbackTilesets[i] != 0xFF; i += 2)
+                {
+                    if(fallbackTilesets[i] == mapID)
+                    {
+                        tilesetID = fallbackTilesets[i+1];
+                    }
+                }
+                if(tilesetID == 0xFF)
+                {
+                    MessageBox.Show("Failed to find fallback tileset for dynamic tileset", "Failed to load map", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    mapLoadingFailed = true;
+                    return;
+                }
+                mapPointer++; // Account for extra byte
+            }
+            mapPointer += 3; // Skip tileset ID and map script
+
+            // Load the map's tileset
             LoadTileset(tilesetID);
+
+            // Read the map's width and height
+            var mapSize = ReadBytesFromROM(mapROMBank, mapPointer, 2);
+            loadedMapWidth = mapSize[0];
+            loadedMapHeight = mapSize[1];
+            mapPointer += 4; // Skip size and loading script
 
             // Now we're going to skip over data irrelevant to us
             // This requires multiple steps because each time we have to read a number of elements to skip over
-
-            // Skip over map properties, music ID, tileset ID, script (2 bytes), width, height, and loading script (2 bytes)
-            mapPointer += 9;
+            
             // Skip over interactions & num of such
             byte numOfInteractions = ReadBytesFromROM(mapROMBank, mapPointer, 1)[0];
             mapPointer++;
