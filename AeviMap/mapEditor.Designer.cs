@@ -40,7 +40,6 @@
             this.aboutAeviMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapRenderer = new System.Windows.Forms.PictureBox();
             this.selectMapID = new System.Windows.Forms.NumericUpDown();
-            this.selLabel = new System.Windows.Forms.Label();
             this.loadMapButton = new System.Windows.Forms.Button();
             this.mapRendererPanel = new System.Windows.Forms.Panel();
             this.openROMDialog = new System.Windows.Forms.OpenFileDialog();
@@ -48,6 +47,8 @@
             this.blockPickerPanel = new System.Windows.Forms.Panel();
             this.blockPicker = new System.Windows.Forms.PictureBox();
             this.openMapDialog = new System.Windows.Forms.OpenFileDialog();
+            this.selectMapName = new System.Windows.Forms.ComboBox();
+            this.miLab = new System.Windows.Forms.Label();
             this.menuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectMapID)).BeginInit();
@@ -149,23 +150,16 @@
             // 
             // selectMapID
             // 
-            this.selectMapID.Location = new System.Drawing.Point(77, 27);
+            this.selectMapID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectMapID.Location = new System.Drawing.Point(685, 29);
             this.selectMapID.Name = "selectMapID";
+            this.selectMapID.ReadOnly = true;
             this.selectMapID.Size = new System.Drawing.Size(70, 20);
             this.selectMapID.TabIndex = 3;
             // 
-            // selLabel
-            // 
-            this.selLabel.AutoSize = true;
-            this.selLabel.Location = new System.Drawing.Point(11, 29);
-            this.selLabel.Name = "selLabel";
-            this.selLabel.Size = new System.Drawing.Size(60, 13);
-            this.selLabel.TabIndex = 4;
-            this.selLabel.Text = "Select map";
-            // 
             // loadMapButton
             // 
-            this.loadMapButton.Location = new System.Drawing.Point(153, 27);
+            this.loadMapButton.Location = new System.Drawing.Point(139, 26);
             this.loadMapButton.Name = "loadMapButton";
             this.loadMapButton.Size = new System.Drawing.Size(75, 23);
             this.loadMapButton.TabIndex = 5;
@@ -228,15 +222,35 @@
             this.openMapDialog.Filter = "Map block files (*.blk)|*.blk|All files|*.*";
             this.openMapDialog.Title = "Load map from file";
             // 
+            // selectMapName
+            // 
+            this.selectMapName.FormattingEnabled = true;
+            this.selectMapName.Location = new System.Drawing.Point(12, 27);
+            this.selectMapName.Name = "selectMapName";
+            this.selectMapName.Size = new System.Drawing.Size(121, 21);
+            this.selectMapName.TabIndex = 8;
+            this.selectMapName.Text = "Select Map";
+            // 
+            // miLab
+            // 
+            this.miLab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.miLab.AutoSize = true;
+            this.miLab.Location = new System.Drawing.Point(637, 31);
+            this.miLab.Name = "miLab";
+            this.miLab.Size = new System.Drawing.Size(42, 13);
+            this.miLab.TabIndex = 9;
+            this.miLab.Text = "Map ID";
+            // 
             // AeviMapMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 594);
+            this.Controls.Add(this.miLab);
+            this.Controls.Add(this.selectMapName);
             this.Controls.Add(this.blockPickerPanel);
             this.Controls.Add(this.mapRendererPanel);
             this.Controls.Add(this.loadMapButton);
-            this.Controls.Add(this.selLabel);
             this.Controls.Add(this.selectMapID);
             this.Controls.Add(this.menuBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -263,7 +277,6 @@
         private System.Windows.Forms.ToolStripMenuItem CloseAeviMapItem;
         private System.Windows.Forms.PictureBox mapRenderer;
         private System.Windows.Forms.NumericUpDown selectMapID;
-        private System.Windows.Forms.Label selLabel;
         private System.Windows.Forms.Button loadMapButton;
         private System.Windows.Forms.Panel mapRendererPanel;
         private System.Windows.Forms.OpenFileDialog openROMDialog;
@@ -276,6 +289,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
+        private System.Windows.Forms.ComboBox selectMapName;
+        private System.Windows.Forms.Label miLab;
     }
 }
 

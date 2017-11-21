@@ -17,13 +17,8 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -50,6 +45,7 @@ namespace AeviMap
 
         private static byte sizeOfBlock = 64; // Size, in pixels, of a block
         private static UInt16 blockDataSize = 16 * 16 * 2; // Size, in bytes, of a block's BMP data
+        public string[] MNArray = new string[8];
 
         private static string[] properties = {
             "numOfTilesets",
@@ -104,10 +100,11 @@ namespace AeviMap
         {
             // Try reading the INI file to update the above info
             OpenINI();
-
+            MapName();
             InitializeComponent();
             selectMapID.Maximum = numOfMaps - 1;
             blockPicker.Size = new Size(sizeOfBlock, sizeOfBlock * numOfBlocks);
+            selectMapName.Items.AddRange(MNArray);
         }
 
 
@@ -893,10 +890,12 @@ namespace AeviMap
         private void LoadMap(object sender, EventArgs e)
         {
             // Get the map's ID from the box
-            byte mapID = (byte)selectMapID.Value;
+            //byte mapID = (byte)selectMapID.Value;
+            byte mapID = (byte)selectMapName.SelectedIndex;
+            selectMapID.Value = selectMapName.SelectedIndex;
             
             // Ensure it's an integer
-            if((decimal)mapID != selectMapID.Value)
+            if((decimal)mapID != selectMapName.SelectedIndex)
             {
                 MessageBox.Show("Valid map IDs are integers !", "Invalid map ID", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 mapLoadingFailed = true;
@@ -1119,6 +1118,27 @@ namespace AeviMap
         {
             about abt = new about();
             abt.ShowDialog();
+        }
+
+        private void MapName()
+        {
+            if (File.Exists(Application.StartupPath + @"\MapInfo.ini") == false)
+            {
+                MNArray[0] = "Startham";
+                MNArray[1] = "Debug Room";
+                MNArray[2] = "Intro";
+                MNArray[3] = "Startham Forest";
+                MNArray[4] = "Player House 1F";
+                MNArray[5] = "Player House 2F";
+                MNArray[6] = "Startham House 2";
+                MNArray[7] = "Startham House 3";
+                File.CreateText(Application.StartupPath + @"\MapInfo.ini").Close();
+                File.WriteAllLines(Application.StartupPath + @"\MapInfo.ini", MNArray);
+            }
+            else
+            {
+                MNArray = File.ReadAllLines(Application.StartupPath + @"\MapInfo.ini").ToArray();
+            }
         }
     }
 }
