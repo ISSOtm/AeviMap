@@ -28,3 +28,13 @@ D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.Ae
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.Properties.Resources.resources
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\AeviMap\obj\Debug\AeviMap.csproj.GenerateResource.Cache
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Debug\AeviMap.about.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Debug\AeviMap.exe.config
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.exe
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.pdb
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Debug\AeviMap.exe
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Debug\AeviMap.pdb
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.csprojResolveAssemblyReference.cache
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.about.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.AeviMapMainWindow.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.Properties.Resources.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.csproj.GenerateResource.Cache

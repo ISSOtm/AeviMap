@@ -18,3 +18,12 @@ D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Release\AeviMap.about.re
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Release\AeviMap.AeviMapMainWindow.resources
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Release\AeviMap.Properties.Resources.resources
 D:\Docs\Visual Studio 2015\Projects\AeviMap\AeviMap\obj\Release\AeviMap.csproj.GenerateResource.Cache
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Release\AeviMap.exe.config
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.exe
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.pdb
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Release\AeviMap.exe
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\bin\Release\AeviMap.pdb
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.about.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.AeviMapMainWindow.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.Properties.Resources.resources
+C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.csproj.GenerateResource.Cache
