@@ -49,6 +49,7 @@
             this.openMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.selectMapName = new System.Windows.Forms.ComboBox();
             this.miLab = new System.Windows.Forms.Label();
+            this.loadMapID = new System.Windows.Forms.Button();
             this.menuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectMapID)).BeginInit();
@@ -153,7 +154,6 @@
             this.selectMapID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectMapID.Location = new System.Drawing.Point(685, 29);
             this.selectMapID.Name = "selectMapID";
-            this.selectMapID.ReadOnly = true;
             this.selectMapID.Size = new System.Drawing.Size(70, 20);
             this.selectMapID.TabIndex = 3;
             // 
@@ -163,7 +163,7 @@
             this.loadMapButton.Name = "loadMapButton";
             this.loadMapButton.Size = new System.Drawing.Size(75, 23);
             this.loadMapButton.TabIndex = 5;
-            this.loadMapButton.Text = "Load";
+            this.loadMapButton.Text = "Load Map";
             this.loadMapButton.UseVisualStyleBackColor = true;
             this.loadMapButton.Click += new System.EventHandler(this.LoadMap);
             // 
@@ -241,11 +241,23 @@
             this.miLab.TabIndex = 9;
             this.miLab.Text = "Map ID";
             // 
+            // loadMapID
+            // 
+            this.loadMapID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadMapID.Location = new System.Drawing.Point(556, 27);
+            this.loadMapID.Name = "loadMapID";
+            this.loadMapID.Size = new System.Drawing.Size(75, 23);
+            this.loadMapID.TabIndex = 10;
+            this.loadMapID.Text = "Load ID";
+            this.loadMapID.UseVisualStyleBackColor = true;
+            this.loadMapID.Click += new System.EventHandler(this.LoadMapID);
+            // 
             // AeviMapMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 594);
+            this.Controls.Add(this.loadMapID);
             this.Controls.Add(this.miLab);
             this.Controls.Add(this.selectMapName);
             this.Controls.Add(this.blockPickerPanel);
@@ -291,6 +303,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
         private System.Windows.Forms.ComboBox selectMapName;
         private System.Windows.Forms.Label miLab;
+        private System.Windows.Forms.Button loadMapID;
     }
 }
 
