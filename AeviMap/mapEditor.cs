@@ -890,8 +890,12 @@ namespace AeviMap
         private void LoadMap(object sender, EventArgs e)
         {
             // Get the map's ID from the box
-            //byte mapID = (byte)selectMapID.Value;
             byte mapID = (byte)selectMapName.SelectedIndex;
+            if (selectMapName.Text == "Select Map")
+            {
+                MessageBox.Show("Please select a map.");
+                return;
+            }
             selectMapID.Value = selectMapName.SelectedIndex;
             
             // Ensure it's an integer
@@ -906,6 +910,19 @@ namespace AeviMap
             LoadMap(mapID);
         }
 
+        private void LoadMapID(object sender, EventArgs e)
+        {
+            byte mapID = (byte)selectMapID.Value;
+
+            if ((decimal)mapID != selectMapID.Value)
+            {
+                MessageBox.Show("Valid map IDs are integers !", "Invalid map ID", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mapLoadingFailed = true;
+                return;
+            }
+            selectMapName.SelectedIndex = Convert.ToInt16(selectMapID.Value);
+            LoadMap(mapID);
+        }
 
         private void MouseEnterBlockPicker(object sender, EventArgs e)
         {
@@ -1140,5 +1157,6 @@ namespace AeviMap
                 MNArray = File.ReadAllLines(Application.StartupPath + @"\MapInfo.ini").ToArray();
             }
         }
+
     }
 }
