@@ -36,7 +36,7 @@ namespace AeviMap
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AeviMapMainWindow());
+            Application.Run(new MapEditor());
         }
     }
 }

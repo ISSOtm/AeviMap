@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AeviMap</RootNamespace>
     <AssemblyName>AeviMap</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -27,6 +27,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -74,6 +75,12 @@
     <Compile Include="about.Designer.cs">
       <DependentUpon>about.cs</DependentUpon>
     </Compile>
+    <Compile Include="Block.cs" />
+    <Compile Include="CGBPalette.cs" />
+    <Compile Include="GB_ROM.cs" />
+    <Compile Include="INI_File.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="Tileset.cs" />
     <Compile Include="mapEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +103,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

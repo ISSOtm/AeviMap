@@ -38,3 +38,13 @@ C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.about.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.AeviMapMainWindow.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.Properties.Resources.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Debug\AeviMap.csproj.GenerateResource.Cache
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Debug\AeviMap.exe.config
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.exe
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.pdb
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.csprojResolveAssemblyReference.cache
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.about.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.MapEditor.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.Properties.Resources.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Debug\AeviMap.csproj.GenerateResource.Cache
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Debug\AeviMap.exe
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Debug\AeviMap.pdb

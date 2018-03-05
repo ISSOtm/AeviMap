@@ -1,6 +1,6 @@
 ﻿namespace AeviMap
 {
-    partial class AeviMapMainWindow
+    partial class MapEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AeviMapMainWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapEditor));
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadROMItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.CloseAeviMapItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +72,6 @@
             // 
             this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoadROMItem,
-            this.loadMapItem,
             this.saveMapItem,
             this.toolStripSeparator1,
             this.CloseAeviMapItem});
@@ -89,14 +87,6 @@
             this.LoadROMItem.Text = "Load ROM...";
             this.LoadROMItem.ToolTipText = "Load Aevilia GB ROM to edit";
             this.LoadROMItem.Click += new System.EventHandler(this.OpenROM);
-            // 
-            // loadMapItem
-            // 
-            this.loadMapItem.Name = "loadMapItem";
-            this.loadMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.loadMapItem.Size = new System.Drawing.Size(182, 22);
-            this.loadMapItem.Text = "Load map...";
-            this.loadMapItem.Click += new System.EventHandler(this.LoadMapFromBlk);
             // 
             // saveMapItem
             // 
@@ -252,7 +242,7 @@
             this.loadMapID.UseVisualStyleBackColor = true;
             this.loadMapID.Click += new System.EventHandler(this.LoadMapID);
             // 
-            // AeviMapMainWindow
+            // MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -267,7 +257,7 @@
             this.Controls.Add(this.menuBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuBar;
-            this.Name = "AeviMapMainWindow";
+            this.Name = "MapEditor";
             this.Text = "AeviMap";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfirmClose);
             this.menuBar.ResumeLayout(false);
@@ -297,7 +287,6 @@
         private System.Windows.Forms.Panel blockPickerPanel;
         private System.Windows.Forms.PictureBox blockPicker;
         private System.Windows.Forms.OpenFileDialog openMapDialog;
-        private System.Windows.Forms.ToolStripMenuItem loadMapItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
