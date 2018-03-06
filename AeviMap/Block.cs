@@ -15,7 +15,7 @@ namespace AeviMap
         private Bitmap bmp;
 
         //          Block's tile IDs, tile's attribs, loaded tiles' data, loaded palettes
-        public Block(byte[] rawIDs, byte[] attributes, byte[][] rawTiles, CGBPalette[] palettes, INI_File INIFile)
+        public Block(byte[] rawIDs, byte[] attributes, byte[][][] rawTiles, CGBPalette[] palettes, INI_File INIFile)
         {
             this.size = (byte)INIFile.GetProperty("sizeofblock");
 
@@ -52,6 +52,7 @@ namespace AeviMap
             {
                 // ID of the tile that will be processed
                 UInt16 curTileID;
+                byte VRAMBank;
                 // These will hold the bitplanes for the current 8 pixels
                 byte tileLayer0, tileLayer1;
                 // Mask used to "unroll" bitplanes
@@ -73,11 +74,8 @@ namespace AeviMap
                     }
                     // Get the ID of the tile we're going to draw
                     curTileID = rawIDs[curIndex];
-                    // VRAM bank 1 is stored at tiles 0x100 - 0x1FF
-                    if((attributes[curIndex] & 0x08) != 0)
-                    {
-                        curTileID += 0x100;
-                    }
+
+                    VRAMBank = (byte)((attributes[curIndex] & 0x08) == 0 ? 0 : 1);
 
                     // This holds the index at which we're going to read tile data from
                     byte tileRow = (byte)(lineID & 0x07);
@@ -88,11 +86,11 @@ namespace AeviMap
                     }
 
                     // Grab the bitplanes for conversion
-                    tileLayer0 = rawTiles[curTileID][tileRow * 2];
-                    tileLayer1 = rawTiles[curTileID][tileRow * 2 + 1];
+                    tileLayer0 = rawTiles[VRAMBank][curTileID][tileRow * 2];
+                    tileLayer1 = rawTiles[VRAMBank][curTileID][tileRow * 2 + 1];
 
-                    // Apply horizontal flip by changing the mask used below (this also changes the way the planes will be shifted)
-                    planeMask = (byte)(((attributes[curIndex] & 0x20) == 0x20) ? 0x80 : 0x01);
+                    // Apply horizontal flip by changing the mask used below (the way the planes will be shifted will also be changed)
+                    planeMask = (byte)(((attributes[curIndex] & 0x20) == 0x20) ? 0x01 : 0x80);
 
                     curPalette = palettes[attributes[curIndex] & 0x7];
 
@@ -113,10 +111,10 @@ namespace AeviMap
                         // Shift the mask, depending on horizontal flip attribute
                         if((attributes[curIndex] & 0x20) == 0x20)
                         {
-                            planeMask >>= 1;
+                            planeMask <<= 1;
                         } else
                         {
-                            planeMask <<= 1;
+                            planeMask >>= 1;
                         }
                         
                         this.bmp.SetPixel(x, lineID, curPalette.GetColor(pixelColorIndex));

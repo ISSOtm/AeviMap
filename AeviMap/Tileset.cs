@@ -16,7 +16,7 @@ namespace AeviMap
         private byte bank;
         private UInt16 ptr;
 
-        private byte[][] tiles = new byte[0x200][];
+        private byte[][][] tiles = new byte[2][][];
         private Block[] blocks;
         private CGBPalette[] BGPalettes;
 
@@ -26,21 +26,26 @@ namespace AeviMap
             blocks = new Block[this.nbOfBlocks];
             BGPalettes = new CGBPalette[this.nbOfBlocks];
 
-            this.tiles[0] = new byte[16]
+            for (byte VRAMBank = 0; VRAMBank <= 1; VRAMBank++)
             {
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00
-            };
-            for(UInt16 i = 1; i < 0x200; i++)
-            {
-                this.tiles[i] = new byte[16] {
-                    0xAA, 0xAA, 0x55, 0x55,
-                    0xAA, 0xAA, 0x55, 0x55,
-                    0xAA, 0xAA, 0x55, 0x55,
-                    0xAA, 0xAA, 0x55, 0x55
+                this.tiles[VRAMBank] = new byte[0x100][];
+
+                this.tiles[VRAMBank][0] = new byte[16]
+                {
+                    0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00
                 };
+                for (UInt16 i = 1; i < 0x100; i++)
+                {
+                    this.tiles[VRAMBank][i] = new byte[16] {
+                        0xAA, 0xAA, 0x55, 0x55,
+                        0xAA, 0xAA, 0x55, 0x55,
+                        0xAA, 0xAA, 0x55, 0x55,
+                        0xAA, 0xAA, 0x55, 0x55
+                    };
+                }
             }
 
             this.tilesetID = tilesetID;
@@ -54,8 +59,9 @@ namespace AeviMap
             this.ptr = ROM.GetShort(bank, addr);
 
             // Read tiles
-            for (UInt16 targetTileID = 0x80; targetTileID < 0x200; )
+            for (byte VRAMBank = 0; VRAMBank <= 1; VRAMBank++)
             {
+                UInt16 targetTileID = 0x80;
                 byte nbOfTiles;
                 do
                 {
@@ -67,14 +73,14 @@ namespace AeviMap
                     {
                         // Read ptr to block
                         byte tileBlockBank = ROM.GetByte(this.bank, this.ptr++);
-                        UInt16 tileBlockPtr = ROM.GetByte(this.bank, this.ptr);
+                        UInt16 tileBlockPtr = ROM.GetShort(this.bank, this.ptr);
                         this.ptr += 2;
 
                         // All tiles are contiguous
                         for(byte i = 0; i < nbOfTiles; i++)
                         {
                             // Read the tile's data
-                            this.tiles[targetTileID] = ROM.GetBytes(tileBlockBank, tileBlockPtr, 16);
+                            this.tiles[VRAMBank][targetTileID] = ROM.GetBytes(tileBlockBank, tileBlockPtr, 16);
 
                             // Advance to next tile
                             tileBlockPtr += 16;
@@ -82,9 +88,6 @@ namespace AeviMap
                         }
                     }
                 } while (nbOfTiles != 0);
-
-                // Advance to next tile bank
-                targetTileID = (UInt16)((targetTileID & 0x100) + 0x100);
             }
 
 
@@ -114,7 +117,10 @@ namespace AeviMap
 
 
             // Load palettes
-            for(byte i = 0; i < this.nbOfPalettes; i++)
+            this.BGPalettes[0] = new CGBPalette(ROM.GetBytes(
+                (byte)properties.GetProperty("palettesbank"), properties.GetProperty("palette0ptr"), CGBPalette.paletteSize
+            ));
+            for(byte i = 1; i < this.nbOfPalettes; i++)
             {
                 UInt16 paletteAddr = ROM.GetShort(this.bank, this.ptr);
                 this.ptr += 2;

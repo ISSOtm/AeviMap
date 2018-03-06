@@ -259,11 +259,12 @@ namespace AeviMap
 
 
 
+            IsMapLoaded = true;
+            this.LoadedMapID = mapID;
+
             Size LoadedMapSize = this.LoadedMap().GetSize();
             mapRenderer.Size = new Size(LoadedMapSize.Width * sizeOfBlock, LoadedMapSize.Height *  sizeOfBlock);
 
-            IsMapLoaded = true;
-            this.LoadedMapID = mapID;
             // Update both of these since the tileset has been reloaded
             mapRenderer.Invalidate();
             blockPicker.Invalidate();
