@@ -27,3 +27,12 @@ C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.about.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.AeviMapMainWindow.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.Properties.Resources.resources
 C:\Users\Kai\Source\Repos\aevimap\AeviMap\obj\Release\AeviMap.csproj.GenerateResource.Cache
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Release\AeviMap.exe.config
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.exe
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.pdb
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Release\AeviMap.exe
+D:\Jeux\GB ASM\AeviMap\AeviMap\bin\Release\AeviMap.pdb
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.about.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.MapEditor.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.Properties.Resources.resources
+D:\Jeux\GB ASM\AeviMap\AeviMap\obj\Release\AeviMap.csproj.GenerateResource.Cache

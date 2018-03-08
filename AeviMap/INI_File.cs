@@ -30,8 +30,12 @@ namespace AeviMap
         private List<string> mapNames = new List<string>(new string[] {
                 "Startham",
                 "Debug Room",
+                "Intro Map",
+                "Startham Forest",
                 "Player House 1F",
-                "Player House 2F"
+                "Player House 2F",
+                "Startham Empty House",
+                "Startham Large House"
             });
         private Dictionary<string, SectionParser> parsers = new Dictionary<string, SectionParser>();
 
@@ -42,17 +46,17 @@ namespace AeviMap
         public INI_File()
         {
             // Default properties
-            properties.Add("nboftilesets", new Property(false, 4));
-            properties.Add("nbofmaps", new Property(false, 7));
+            properties.Add("nboftilesets", new Property(false, 6));
+            properties.Add("nbofmaps", new Property(false, 8));
             properties.Add("nbofblocks", new Property(false, 64));
             properties.Add("mapptrsbank", new Property(false, 2));
             properties.Add("mapbanksptr", new Property(true, 0x4000));
-            properties.Add("mapptrsptr", new Property(true, 0x4007));
+            properties.Add("mapptrsptr", new Property(true, 0x4008));
             properties.Add("tilesetptrsbank", new Property(false, 2));
             properties.Add("tilesetbanksptr", new Property(true, 0x4300));
-            properties.Add("tilesetptrsptr", new Property(true, 0x4304));
+            properties.Add("tilesetptrsptr", new Property(true, 0x4306));
             properties.Add("palettesbank", new Property(false, 1));
-            properties.Add("palette0ptr", new Property(true, 0x51AC)); // Pointer to EvieDefaultPalette
+            properties.Add("palette0ptr", new Property(true, 0x5168)); // Pointer to EvieDefaultPalette
             properties.Add("sizeofblock", new Property(false, 16));
 
 

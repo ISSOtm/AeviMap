@@ -31,15 +31,23 @@ namespace AeviMap
         }
 
 
+        /// <summary>
+        /// Retrieves an array of bytes from the ROM.
+        /// </summary>
+        /// <param name="bank">The bank from which to fetch data from.</param>
+        /// <param name="addr">The address at which to fetch data from.</param>
+        /// <param name="len">The number of bytes to fetch.</param>
+        /// <exception cref="ArgumentOutOfRangeException">When the data is accessed outside of the ROM.</exception>
+        /// <returns>The array of bytes.</returns>
         public byte[] GetBytes(byte bank, UInt16 addr, UInt16 len)
         {
             if(addr >= 0x8000 || addr + len > 0x8000)
             {
-                throw new IndexOutOfRangeException("Attempted to read " + len + " bytes from 0x" + MapEditor.decToHex(addr));
+                throw new ArgumentOutOfRangeException(String.Format("Attempted to read {0} bytes from 0x{1}.", len, MapEditor.decToHex(addr)), (Exception)null);
             }
             if(len == 0)
             {
-                throw new ArgumentOutOfRangeException("Attempted to read 0 bytes");
+                throw new ArgumentOutOfRangeException("Attempted to read 0 bytes.", (Exception)null);
             }
 
             byte[] data = new byte[len];
@@ -58,11 +66,25 @@ namespace AeviMap
             return data;
         }
 
+        /// <summary>
+        /// Retrieves a byte from the ROM.
+        /// </summary>
+        /// <param name="bank">The bank from which to fetch the byte from.</param>
+        /// <param name="addr">The address at which to fetch the byte from.</param>
+        /// <exception cref="ArgumentOutOfRangeException">When the byte is accessed outside of the ROM.</exception>
+        /// <returns>The byte.</returns>
         public byte GetByte(byte bank, UInt16 addr)
         {
             return this.GetBytes(bank, addr, 1)[0];
         }
 
+        /// <summary>
+        /// Retrieves a short from the ROM.
+        /// </summary>
+        /// <param name="bank">The bank from which to fetch the short from.</param>
+        /// <param name="addr">The address at which to fetch the short from.</param>
+        /// <exception cref="ArgumentOutOfRangeException">When the data is accessed outside of the ROM.</exception>
+        /// <returns>The low-endian short.</returns>
         public UInt16 GetShort(byte bank, UInt16 addr)
         {
             byte[] rawShort = this.GetBytes(bank, addr, 2);

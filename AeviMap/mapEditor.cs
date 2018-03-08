@@ -1,6 +1,6 @@
 ﻿
 /*
- *   Copyright 2017 ISSOtm, Kai
+ *   Copyright 2018 ISSOtm, Kai
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -51,7 +51,13 @@ namespace AeviMap
         public MapEditor()
         {
             // Try reading the INI file
-            this.INIFile.ParseFile("AeviMap.ini");
+            try
+            {
+                this.INIFile.ParseFile("AeviMap.ini");
+            } catch(FileNotFoundException)
+            {
+                // Ignore a nonexistent file
+            }
             // Write the full INI file (TODO : this isn't always necessary)
             this.INIFile.WriteFile("AeviMap.ini");
 
@@ -225,13 +231,26 @@ namespace AeviMap
         /// <param name="mapID">The ID of the map to load.</param>
         private void LoadMap(byte mapID)
         {
-            if(this.ROM == null)
+            if (this.ROM == null)
             {
                 MessageBox.Show("Load a ROM first.", "Can't load map !", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
             }
 
-            if(mapID < 0 || mapID >= this.INIFile.GetProperty("nbofmaps"))
+
+            try
+            {
+                // Attempt to load the map, in case it fails
+                this.ROM.GetMap(mapID, this.INIFile);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show(String.Format("{0}\nPlease ensure that your INI file matches your ROM!", ex.Message), "Failed to load map", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+
+            if (mapID < 0 || mapID >= this.INIFile.GetProperty("nbofmaps"))
             {
                 MessageBox.Show(String.Format("Valid map IDs are integers between 0 and {0} !", this.INIFile.GetProperty("nbofmaps")), "Invalid map ID !", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
@@ -263,7 +282,7 @@ namespace AeviMap
             this.LoadedMapID = mapID;
 
             Size LoadedMapSize = this.LoadedMap().GetSize();
-            mapRenderer.Size = new Size(LoadedMapSize.Width * sizeOfBlock, LoadedMapSize.Height *  sizeOfBlock);
+            mapRenderer.Size = new Size(LoadedMapSize.Width * sizeOfBlock, LoadedMapSize.Height * sizeOfBlock);
 
             // Update both of these since the tileset has been reloaded
             mapRenderer.Invalidate();
@@ -332,6 +351,7 @@ namespace AeviMap
                 return;
             }
             selectMapName.SelectedIndex = Convert.ToInt16(selectMapID.Value);
+
             LoadMap(mapID);
         }
 

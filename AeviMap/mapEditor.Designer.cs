@@ -35,7 +35,7 @@
             this.saveMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.CloseAeviMapItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutAeviMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapRenderer = new System.Windows.Forms.PictureBox();
             this.selectMapID = new System.Windows.Forms.NumericUpDown();
@@ -61,7 +61,7 @@
             // 
             this.menuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
-            this.helpToolStripMenuItem});
+            this.HelpMenu});
             this.menuBar.Location = new System.Drawing.Point(0, 0);
             this.menuBar.Name = "menuBar";
             this.menuBar.Size = new System.Drawing.Size(767, 24);
@@ -109,13 +109,13 @@
             this.CloseAeviMapItem.Text = "Close";
             this.CloseAeviMapItem.Click += new System.EventHandler(this.closeApp);
             // 
-            // helpToolStripMenuItem
+            // HelpMenu
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutAeviMapToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.HelpMenu.Name = "HelpMenu";
+            this.HelpMenu.Size = new System.Drawing.Size(44, 20);
+            this.HelpMenu.Text = "Help";
             // 
             // aboutAeviMapToolStripMenuItem
             // 
@@ -130,7 +130,7 @@
             this.mapRenderer.BackColor = System.Drawing.SystemColors.ControlDark;
             this.mapRenderer.Location = new System.Drawing.Point(0, 0);
             this.mapRenderer.Name = "mapRenderer";
-            this.mapRenderer.Size = new System.Drawing.Size(644, 526);
+            this.mapRenderer.Size = new System.Drawing.Size(692, 526);
             this.mapRenderer.TabIndex = 2;
             this.mapRenderer.TabStop = false;
             this.mapRenderer.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderMap);
@@ -166,7 +166,7 @@
             this.mapRendererPanel.Controls.Add(this.mapRenderer);
             this.mapRendererPanel.Location = new System.Drawing.Point(12, 56);
             this.mapRendererPanel.Name = "mapRendererPanel";
-            this.mapRendererPanel.Size = new System.Drawing.Size(644, 526);
+            this.mapRendererPanel.Size = new System.Drawing.Size(692, 526);
             this.mapRendererPanel.TabIndex = 6;
             // 
             // openROMDialog
@@ -187,9 +187,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.blockPickerPanel.AutoScroll = true;
             this.blockPickerPanel.Controls.Add(this.blockPicker);
-            this.blockPickerPanel.Location = new System.Drawing.Point(662, 56);
+            this.blockPickerPanel.Location = new System.Drawing.Point(710, 56);
             this.blockPickerPanel.Name = "blockPickerPanel";
-            this.blockPickerPanel.Size = new System.Drawing.Size(93, 526);
+            this.blockPickerPanel.Size = new System.Drawing.Size(45, 526);
             this.blockPickerPanel.TabIndex = 7;
             // 
             // blockPicker
@@ -197,7 +197,7 @@
             this.blockPicker.BackColor = System.Drawing.SystemColors.ControlDark;
             this.blockPicker.Location = new System.Drawing.Point(0, 0);
             this.blockPicker.Name = "blockPicker";
-            this.blockPicker.Size = new System.Drawing.Size(64, 526);
+            this.blockPicker.Size = new System.Drawing.Size(16, 526);
             this.blockPicker.TabIndex = 0;
             this.blockPicker.TabStop = false;
             this.blockPicker.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderBlockPicker);
@@ -288,7 +288,7 @@
         private System.Windows.Forms.PictureBox blockPicker;
         private System.Windows.Forms.OpenFileDialog openMapDialog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
         private System.Windows.Forms.ComboBox selectMapName;
         private System.Windows.Forms.Label miLab;
