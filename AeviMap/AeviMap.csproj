@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -78,11 +78,23 @@
     <Compile Include="Block.cs" />
     <Compile Include="CGBPalette.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="editMapData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="editMapData.Designer.cs">
+      <DependentUpon>editMapData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interaction.cs" />
     <Compile Include="GB_ROM.cs" />
     <Compile Include="INI_File.cs" />
     <Compile Include="InteractionBox.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="mapCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mapCreator.Designer.cs">
+      <DependentUpon>mapCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="MusicEnums.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Thread2Function.cs" />
@@ -95,9 +107,20 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tilesetDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>tilesetDB.resx</DependentUpon>
+    </Compile>
     <Compile Include="WarpTo.cs" />
     <EmbeddedResource Include="about.resx">
       <DependentUpon>about.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="editMapData.resx">
+      <DependentUpon>editMapData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mapCreator.resx">
+      <DependentUpon>mapCreator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mapEditor.resx">
       <DependentUpon>mapEditor.cs</DependentUpon>
@@ -112,6 +135,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="tilesetDB.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>tilesetDB.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -127,6 +154,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="abv.ico" />
+    <None Include="Resources\unknown_tileset.bmp" />
+    <None Include="Resources\tilesetruins.bmp" />
+    <None Include="Resources\outdoor_tileset.bmp" />
+    <None Include="Resources\indoor_tileset.bmp" />
+    <None Include="Resources\beach_tileset.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

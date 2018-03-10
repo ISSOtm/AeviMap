@@ -564,5 +564,16 @@ namespace AeviMap
             abt.ShowDialog();
         }
 
+        private void NewMap(object sender, EventArgs e)
+        {
+            mapCreator mapCrt = new mapCreator();
+            mapCrt.ShowDialog();
+        }
+
+        private void EditMap(object sender, EventArgs e)
+        {
+            editMapData mapEdt = new editMapData();
+            mapEdt.ShowDialog();
+        }
     }
 }
