@@ -118,7 +118,7 @@ namespace AeviMap
 
             // Load palettes
             this.BGPalettes[0] = new CGBPalette(ROM.GetBytes(
-                (byte)properties.GetProperty("palettesbank"), properties.GetProperty("palette0ptr"), CGBPalette.paletteSize
+                (byte)properties.GetProperty("palettesbank"), properties.GetProperty("bgpalette0ptr"), CGBPalette.paletteSize
             ));
             for(byte i = 1; i < this.nbOfPalettes; i++)
             {

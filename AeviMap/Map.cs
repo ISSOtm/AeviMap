@@ -11,15 +11,33 @@ namespace AeviMap
     {
         private byte mapID;
         private byte bank;
-        private UInt16 ptr;
+        private UInt16 addr;
 
         private byte flags;
-        private byte musicID;
+        private MusicID musicID;
         private Tileset tileset;
+        private UInt16 MapScriptPtr;
         private uint height;
         private uint width;
+        private UInt16 LoadingPtr;
+
         private byte nbOfInteractions;
+        private Interaction[] Interactions;
+
         private byte nbOfNPCs;
+        private NPC[] NPCs;
+        private byte nbOfNPCScripts;
+        private UInt16 NPCScriptsPtr;
+        private byte nbOfNPCTiles;
+        private byte[] NPCTileBanks;
+        private UInt16[] NPCTilePtrs;
+
+        private CGBPalette[] OBJPalettes = new CGBPalette[8];
+
+        private byte nbOfWarpToPoints;
+        private WarpTo[] WarpToPoints;
+
+
         private byte[,] rawMap;
 
         public Map(INI_File properties, GB_ROM ROM, byte mapID)
@@ -32,77 +50,112 @@ namespace AeviMap
             this.bank = ROM.GetByte(bank, addr);
 
             addr = (UInt16)(properties.GetProperty("mapptrsptr") + mapID * 2);
-            this.ptr = ROM.GetShort(bank, addr);
+            UInt16 ptr = ROM.GetShort(bank, addr);
+            this.addr = ptr;
 
             // Read header
-            this.flags = ROM.GetByte(this.bank, this.ptr);
-            this.ptr++;
+            this.flags = ROM.GetByte(this.bank, ptr);
+            ptr++;
 
-            this.musicID = ROM.GetByte(this.bank, this.ptr);
-            this.ptr++;
+            this.musicID = (MusicID)ROM.GetByte(this.bank, ptr);
+            ptr++;
 
-            if(ROM.GetByte(this.bank, this.ptr++) == 0)
+            if(ROM.GetByte(this.bank, ptr++) == 0)
             {
                 // Static tileset, easy, the ID is just there to be read
-                this.tileset = ROM.GetTileset(ROM.GetByte(this.bank, this.ptr), properties);
+                this.tileset = ROM.GetTileset(ROM.GetByte(this.bank, ptr), properties);
             }
             else
             {
                 // Dynamic tileset, this depends on a function... uh oh. We'll fall back to a default tileset
                 // TODO : implement fallback tilesets
                 this.tileset = ROM.GetTileset(0, properties);
-                this.ptr++; // Skip extra byte (func *ptr* instead of tileset ID *byte*)
+                ptr++; // Skip extra byte (func *ptr* instead of tileset ID *byte*)
             }
+            ptr++;
 
-            this.ptr += 3; // Skip over tileset byte and map script ptr
+            this.MapScriptPtr = ROM.GetShort(this.bank, ptr);
+            ptr += 2;
 
-            this.width = ROM.GetByte(this.bank, this.ptr);
-            this.ptr++;
-            this.height = ROM.GetByte(this.bank, this.ptr);
+            this.width = ROM.GetByte(this.bank, ptr);
+            ptr++;
+            this.height = ROM.GetByte(this.bank, ptr);
+            ptr++;
 
-            this.ptr += 3; // Skip height and loading ptr
+            this.LoadingPtr = ROM.GetShort(this.bank, ptr);
+            ptr += 2;
 
-            // Skip interactions (that's non-trivial, sadly)
-            this.nbOfInteractions = ROM.GetByte(this.bank, this.ptr);
-            this.ptr++;
+            // Read interactions
+            this.nbOfInteractions = ROM.GetByte(this.bank, ptr++);
+            this.Interactions = new Interaction[this.nbOfInteractions];
+
             for (byte i = 0; i < this.nbOfInteractions; i++)
             {
-                // If there is a flag dep, then skip it
-                if((ROM.GetByte(this.bank, this.ptr++) & 0x80) != 0) {
-                    this.ptr += 2;
-                }
-                this.ptr += 16;
+                byte type = ROM.GetByte(this.bank, ptr);
+                this.Interactions[i] = (type & 2) != 0 ? (Interaction)new LoadingZone(ROM, this.bank, ptr) : (Interaction)new InteractionTrigger(ROM, this.bank, ptr);
+
+                byte size = this.Interactions[i].size;
+                ptr += size;
             }
 
             // Skip NPCs
-            this.nbOfNPCs = ROM.GetByte(this.bank, this.ptr++);
-            if(nbOfNPCs != 0)
+            this.nbOfNPCs = ROM.GetByte(this.bank, ptr++);
+            if(this.nbOfNPCs != 0)
             {
-                // Maybe the map editor will be able to edit NPCs at some point?
-                // If so, that would be implemented here
+                this.NPCs = new NPC[this.nbOfNPCs];
+                for (byte i = 0; i < this.nbOfNPCs; i++)
+                {
+                    this.NPCs[i] = new NPC(ROM, this.bank, ptr);
+                    ptr += 14;
+                }
 
-                // Skip NPCs proper                and NPC scripts
-                this.ptr += (UInt16)(nbOfNPCs * 14 + 3);
+                this.nbOfNPCScripts = ROM.GetByte(this.bank, ptr++);
+                this.NPCScriptsPtr = ROM.GetShort(this.bank, ptr);
+                ptr += 2;
 
-                // Skip NPC tiles (another non-trivial skip...)
-                for(byte i = 0, nbOfNPCTiles = ROM.GetByte(this.bank, this.ptr++); i < nbOfNPCTiles; i++)
+                this.nbOfNPCTiles = ROM.GetByte(this.bank, ptr++);
+                this.NPCTileBanks = new byte[this.nbOfNPCTiles];
+                this.NPCTilePtrs = new UInt16[this.nbOfNPCTiles];
+                for(byte i = 0; i < this.nbOfNPCTiles; i++)
                 {
                     // 0 is a special trap; otherwise, there's also a 2-byte pointer following it
-                    if(ROM.GetByte(this.bank, this.ptr++) != 0) {
-                        this.ptr += 2;
+                    this.NPCTileBanks[i] = ROM.GetByte(this.bank, ptr++);
+                    if (this.NPCTileBanks[i] != 0) {
+                        this.NPCTilePtrs[i] = ROM.GetShort(this.bank, ptr);
+                        ptr += 2;
+                    } else
+                    {
+                        this.NPCTileBanks[i] = (byte)properties.GetProperty("evietilesbank");
+                        this.NPCTilePtrs[i] = properties.GetProperty("evietilesptr");
                     }
                 }
             }
+            
+            this.OBJPalettes[0] = new CGBPalette(ROM.GetBytes(1, properties.GetProperty("objpalette0ptr"), CGBPalette.paletteSize));
+            for(byte i = 1; i < 8; i++)
+            {
+                UInt16 PalettePtr = ROM.GetShort(this.bank, ptr);
+                ptr += 2;
+                if(PalettePtr == 0)
+                {
+                    PalettePtr = properties.GetProperty("siblingpaletteptr");
+                }
 
-            // Skip OBJ palette ptrs
-            this.ptr += 7 * 2;
+                this.OBJPalettes[i] = new CGBPalette(ROM.GetBytes(1, PalettePtr, CGBPalette.paletteSize));
+            }
 
             // Skip warp-to points
-            this.ptr += (UInt16)(ROM.GetByte(this.bank, this.ptr) * 16 + 1);
+            this.nbOfWarpToPoints = ROM.GetByte(this.bank, ptr++);
+            this.WarpToPoints = new WarpTo[this.nbOfWarpToPoints];
+            for(byte i = 0; i < this.nbOfWarpToPoints; i++)
+            {
+                this.WarpToPoints[i] = new WarpTo(ROM, this.bank, ptr);
+                ptr += 16;
+            }
 
 
             // Read raw map
-            byte[] rawMap = ROM.GetBytes(this.bank, this.ptr, (UInt16)(this.height * this.width));
+            byte[] rawMap = ROM.GetBytes(this.bank, ptr, (UInt16)(this.height * this.width));
             this.rawMap = new byte[this.height, this.width];
 
             for (byte y = 0; y < this.height; y++)

@@ -56,7 +56,11 @@ namespace AeviMap
             properties.Add("tilesetbanksptr", new Property(true, 0x4300));
             properties.Add("tilesetptrsptr", new Property(true, 0x4306));
             properties.Add("palettesbank", new Property(false, 1));
-            properties.Add("palette0ptr", new Property(true, 0x5168)); // Pointer to EvieDefaultPalette
+            properties.Add("objpalette0ptr", new Property(true, 0x5168)); // Pointer to EvieDefaultPalette
+            properties.Add("siblingpaletteptr", new Property(true, 0x517D)); // Pointer to TomDefaultPalette
+            properties.Add("bgpalette0ptr", new Property(true, 0x5171));
+            properties.Add("evietilesbank", new Property(false, 1)); // Full pointer to EvieTiles
+            properties.Add("evietilesptr", new Property(true, 0x4670));
             properties.Add("sizeofblock", new Property(false, 16));
 
 
@@ -335,36 +339,39 @@ namespace AeviMap
                 if(pieces.Length == 2) // Silently ignore malformed lines
                 {
                     string propName = pieces[0].Trim().ToLower();
-                    UInt16 propValue;
-                    bool isPropertyCorrect;
-                    string rawPropValue = pieces[1].Trim().ToUpper();
+                    if (file.properties.Keys.Contains(propName)) // Silently ignore unknown properties
+                    {
+                        UInt16 propValue;
+                        bool isPropertyCorrect;
+                        string rawPropValue = pieces[1].Trim().ToUpper();
 
-                    if (!file.IsPropertyHex(propName))
-                    {
-                        isPropertyCorrect = UInt16.TryParse(rawPropValue, out propValue);
-                    }
-                    else
-                    {
-                        byte i = 0;
-                        bool isPrefixValid = false;
-                        // Attempt to remove a prefix
-                        while (i < hexPrefixes.Length && !isPrefixValid)
+                        if (!file.IsPropertyHex(propName))
                         {
-                            if (rawPropValue.IndexOf(hexPrefixes[i]) == 0)
+                            isPropertyCorrect = UInt16.TryParse(rawPropValue, out propValue);
+                        }
+                        else
+                        {
+                            byte i = 0;
+                            bool isPrefixValid = false;
+                            // Attempt to remove a prefix
+                            while (i < hexPrefixes.Length && !isPrefixValid)
                             {
-                                rawPropValue = rawPropValue.Remove(0, hexPrefixes[i].Length);
-                                isPrefixValid = true;
+                                if (rawPropValue.IndexOf(hexPrefixes[i]) == 0)
+                                {
+                                    rawPropValue = rawPropValue.Remove(0, hexPrefixes[i].Length);
+                                    isPrefixValid = true;
+                                }
+                                i++;
                             }
-                            i++;
+
+                            // Also remove the suffix if there is one
+                            isPropertyCorrect = MapEditor.hexToDec(rawPropValue.TrimEnd('H'), out propValue);
                         }
 
-                        // Also remove the suffix if there is one
-                        isPropertyCorrect = MapEditor.hexToDec(rawPropValue.TrimEnd('H'), out propValue);
-                    }
-
-                    if (isPropertyCorrect) // Again, silently ignore malformed lines
-                    {
-                        file.SetProperty(propName, propValue);
+                        if (isPropertyCorrect) // Again, silently ignore malformed lines
+                        {
+                            file.SetProperty(propName, propValue);
+                        }
                     }
                 }
             }

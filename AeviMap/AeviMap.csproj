@@ -77,9 +77,15 @@
     </Compile>
     <Compile Include="Block.cs" />
     <Compile Include="CGBPalette.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="Interaction.cs" />
     <Compile Include="GB_ROM.cs" />
     <Compile Include="INI_File.cs" />
+    <Compile Include="InteractionBox.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MusicEnums.cs" />
+    <Compile Include="NPC.cs" />
+    <Compile Include="Thread2Function.cs" />
     <Compile Include="Tileset.cs" />
     <Compile Include="mapEditor.cs">
       <SubType>Form</SubType>
@@ -89,6 +95,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WarpTo.cs" />
     <EmbeddedResource Include="about.resx">
       <DependentUpon>about.cs</DependentUpon>
     </EmbeddedResource>
