@@ -60,10 +60,25 @@
             // 
             // mapXBox
             // 
-            this.mapXBox.Location = new System.Drawing.Point(75, 31);
+            this.mapXBox.Location = new System.Drawing.Point(60, 31);
+            this.mapXBox.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.mapXBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.mapXBox.Name = "mapXBox";
             this.mapXBox.Size = new System.Drawing.Size(120, 20);
             this.mapXBox.TabIndex = 1;
+            this.mapXBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // mapDGrp
             // 
@@ -81,27 +96,42 @@
             // mapYLab
             // 
             this.mapYLab.AutoSize = true;
-            this.mapYLab.Location = new System.Drawing.Point(19, 59);
+            this.mapYLab.Location = new System.Drawing.Point(217, 33);
             this.mapYLab.Name = "mapYLab";
-            this.mapYLab.Size = new System.Drawing.Size(50, 13);
+            this.mapYLab.Size = new System.Drawing.Size(38, 13);
             this.mapYLab.TabIndex = 5;
-            this.mapYLab.Text = "Y Length";
+            this.mapYLab.Text = "Height";
             // 
             // mapXLab
             // 
             this.mapXLab.AutoSize = true;
             this.mapXLab.Location = new System.Drawing.Point(19, 33);
             this.mapXLab.Name = "mapXLab";
-            this.mapXLab.Size = new System.Drawing.Size(50, 13);
+            this.mapXLab.Size = new System.Drawing.Size(35, 13);
             this.mapXLab.TabIndex = 4;
-            this.mapXLab.Text = "X Length";
+            this.mapXLab.Text = "Width";
             // 
             // mapYBox
             // 
-            this.mapYBox.Location = new System.Drawing.Point(75, 57);
+            this.mapYBox.Location = new System.Drawing.Point(261, 31);
+            this.mapYBox.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.mapYBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.mapYBox.Name = "mapYBox";
             this.mapYBox.Size = new System.Drawing.Size(120, 20);
             this.mapYBox.TabIndex = 3;
+            this.mapYBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // mapDataGrp
             // 
@@ -178,7 +208,7 @@
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.CloseDialog);
             // 
-            // editMapData
+            // headerEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,7 +220,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "editMapData";
+            this.Name = "headerEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit Map Data";
             ((System.ComponentModel.ISupportInitialize)(this.mapXBox)).EndInit();

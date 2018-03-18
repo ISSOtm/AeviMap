@@ -37,10 +37,31 @@ namespace AeviMap
 
 
         // State vars
-        private bool UnsavedChanges = false;
         private bool IsMapLoaded = false;
         private Map LoadedMap;
         private List<Map> CustomMaps = new List<Map>();
+        private bool IsROMMapLoaded = false;
+        private byte LoadedMapID;
+        private bool UnsavedChanges
+        {
+            get
+            {
+                foreach (Map Map in this.CustomMaps)
+                {
+                    if(Map.HasUnsavedChanges())
+                    {
+                        return true;
+                    }
+                }
+
+                if (this.ROM != null)
+                {
+                    return this.ROM.HasUnsavedChanges();
+                }
+
+                return false;
+            }
+        }
 
         private byte SelectedBlock = 0;
         private byte HoveredBlock = 0;
@@ -187,7 +208,8 @@ namespace AeviMap
                 ROM = new GB_ROM(openROMDialog.FileName, this.INIFile);
                 mapRenderer.Invalidate();
                 blockPicker.Invalidate();
-                UnsavedChanges = false;
+
+                this.CustomMaps = new List<Map>();
             }
         }
 
@@ -214,7 +236,7 @@ namespace AeviMap
                 mapFile.Write(blocks, 0, blocks.Length);
                 mapFile.Close();
 
-                UnsavedChanges = false;
+                this.LoadedMap.SavedChanges();
             }
         }
 
@@ -225,28 +247,6 @@ namespace AeviMap
         /// <param name="mapID">The ID of the map to load.</param>
         private void LoadMap(Map map)
         {
-            if(UnsavedChanges)
-            {
-                DialogResult areFucksGiven = MessageBox.Show("There are unsaved changes!\nDo you want to save them before switching?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
-                if(areFucksGiven == DialogResult.Yes)
-                {
-                    SaveMap();
-                    if(UnsavedChanges)
-                    {
-                        MessageBox.Show("Please save your changes.", "Still unsaved changes", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-                        return;
-                    }
-                }
-                else if(areFucksGiven == DialogResult.Cancel)
-                {
-                    return;
-                }
-                // else : 0 fucks given, don't do anything.
-                UnsavedChanges = false;
-            }
-
-
-
             IsMapLoaded = true;
             this.LoadedMap = map;
 
@@ -265,6 +265,7 @@ namespace AeviMap
             ]);
 
             MapIDLabel.Text = "Map ID: N/A";
+            this.IsROMMapLoaded = false;
         }
 
 
@@ -331,6 +332,8 @@ namespace AeviMap
 
             LoadMap(map);
             MapIDLabel.Text = String.Format("Map ID: {0}", mapID);
+            this.IsROMMapLoaded = true;
+            this.LoadedMapID = mapID;
         }
 
 
@@ -386,7 +389,6 @@ namespace AeviMap
 
         private void ModifyHoveredBlock(uint blockY, uint blockX)
         {
-            UnsavedChanges = true;
             this.LoadedMap.SetBlockIDAt(blockX, blockY, SelectedBlock);
             mapRenderer.Invalidate();
         }
@@ -514,25 +516,41 @@ namespace AeviMap
 
             if (mapCrt.HasCreatedMap())
             {
-                ToolStripMenuItem MapMenuItem = new ToolStripMenuItem(
-                    mapCrt.CreatedMapName, null, LoadMap, String.Format("Map{0}", this.CustomMaps.Count)
-                );
-
-                NoMapHereItem.Text = "Custom maps";
-                MapMenu.DropDownItems.Add(MapMenuItem);
-                this.CustomMaps.Add(mapCrt.GetCreatedMap());
-
-                // Load the newly-created map
-                MapMenuItem.PerformClick();
+                this.NewCustomMap(mapCrt.GetCreatedMap(), mapCrt.CreatedMapName);
             }
+        }
+
+        private void NewCustomMap(Map Map, string MapName)
+        {
+            ToolStripMenuItem MapMenuItem = new ToolStripMenuItem(
+                MapName, null, LoadMap, String.Format("Map{0}", this.CustomMaps.Count)
+            );
+
+            NoMapHereItem.Text = "Custom maps";
+            MapMenu.DropDownItems.Add(MapMenuItem);
+            this.CustomMaps.Add(Map);
+
+            // Load the newly-created map
+            MapMenuItem.PerformClick();
         }
 
         private void EditMap(object sender, EventArgs e)
         {
-            if (this.ROM == null)
+            if (!this.IsMapLoaded)
             {
-                MessageBox.Show("Load a ROM first.", "Can't edit map!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Load a map first.", "Can't edit map!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
+            }
+
+            if(this.IsROMMapLoaded)
+            {
+                DialogResult ShallClone = MessageBox.Show("Cannot edit the header of a map loaded from ROM.\nDo you want to create a copy of the map and edit its header ?", "Can't edit map!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if(ShallClone == DialogResult.No)
+                {
+                    return;
+                }
+
+                this.NewCustomMap(this.LoadedMap.Clone(), String.Format("{0} (copy)", this.INIFile.GetMapName(this.LoadedMapID)));
             }
 
             headerEditor headEdt = new headerEditor(this.ROM, this.INIFile);

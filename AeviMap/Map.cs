@@ -12,6 +12,7 @@ namespace AeviMap
         private byte mapID;
         private byte bank;
         private UInt16 addr;
+        private bool UnsavedChanges = false;
 
         private byte flags;
         private MusicID musicID;
@@ -56,6 +57,12 @@ namespace AeviMap
                     this.rawMap[y, x] = FillerBlockID;
                 }
             }
+        }
+
+        // Init an even more barebones map -- only use this to clone a map!!
+        private Map()
+        {
+            this.UnsavedChanges = true;
         }
 
         public Map(INI_File properties, GB_ROM ROM, byte mapID)
@@ -204,6 +211,7 @@ namespace AeviMap
         public void SetBlockIDAt(uint x, uint y, byte ID)
         {
             this.rawMap[y, x] = ID;
+            this.UnsavedChanges = true;
         }
 
 
@@ -224,10 +232,55 @@ namespace AeviMap
             return blocks;
         }
 
+        public void SavedChanges()
+        {
+            this.UnsavedChanges = false;
+        }
+
+        public bool HasUnsavedChanges()
+        {
+            return this.UnsavedChanges;
+        }
+
 
         public Size GetSize()
         {
             return new Size((int)this.width, (int)this.height);
+        }
+
+
+        public Map Clone()
+        {
+            Map Clone = new Map();
+
+            Clone.flags            = flags;
+            Clone.musicID          = musicID;
+            Clone.tileset          = tileset;
+            Clone.MapScriptPtr     = MapScriptPtr;
+            Clone.height           = height;
+            Clone.width            = width;
+            Clone.LoadingPtr       = LoadingPtr;
+
+            Clone.nbOfInteractions = nbOfInteractions;
+            Clone.Interactions     = (Interaction[])Interactions.Clone();
+
+            Clone.nbOfNPCs         = nbOfNPCs;
+            Clone.NPCs             = (NPC[])NPCs.Clone();
+            Clone.nbOfNPCScripts   = nbOfNPCScripts;
+            Clone.NPCScriptsPtr    = NPCScriptsPtr;
+            Clone.nbOfNPCTiles     = nbOfNPCTiles;
+            Clone.NPCTileBanks     = (byte[])NPCTileBanks.Clone();
+            Clone.NPCTilePtrs      = (UInt16[])NPCTilePtrs.Clone();
+
+            Clone.OBJPalettes      = (CGBPalette[])OBJPalettes.Clone();
+
+            Clone.nbOfWarpToPoints = nbOfWarpToPoints;
+            Clone.WarpToPoints     = (WarpTo[])WarpToPoints.Clone();
+
+
+            Clone.rawMap           = (byte[,])this.rawMap.Clone();
+
+            return Clone;
         }
     }
 }

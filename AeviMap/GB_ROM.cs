@@ -101,6 +101,18 @@ namespace AeviMap
             return this.maps[mapID];
         }
 
+        public bool HasUnsavedChanges()
+        {
+            foreach(Map Map in this.maps)
+            {
+                if(Map != null && Map.HasUnsavedChanges())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public Tileset GetTileset(byte tilesetID, INI_File ini)
         {
             if(this.tilesets[tilesetID] == null)
