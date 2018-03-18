@@ -17,6 +17,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -38,7 +39,8 @@ namespace AeviMap
         // State vars
         private bool UnsavedChanges = false;
         private bool IsMapLoaded = false;
-        private int LoadedMapID;
+        private Map LoadedMap;
+        private List<Map> CustomMaps = new List<Map>();
 
         private byte SelectedBlock = 0;
         private byte HoveredBlock = 0;
@@ -68,7 +70,6 @@ namespace AeviMap
 
             // Init gfx components
             InitializeComponent();
-            selectMapID.Maximum = this.INIFile.GetProperty("nbofmaps") - 1;
             blockPicker.Size = new Size(sizeOfBlock, sizeOfBlock * this.INIFile.GetProperty("nbofblocks"));
 
             // Add map names to the picker
@@ -155,13 +156,6 @@ namespace AeviMap
 
 
 
-        private Map LoadedMap()
-        {
-            return this.ROM.GetMap((byte)this.LoadedMapID, this.INIFile);
-        }
-
-
-
         // ===== "Engine" functions =====
 
         /// <summary>
@@ -213,7 +207,7 @@ namespace AeviMap
             {
                 FileStream mapFile;
                 string mapFilePath = saveMapDialog.FileName;
-                byte[] blocks = this.LoadedMap().GetBlocks();
+                byte[] blocks = this.LoadedMap.GetBlocks();
 
                 mapFile = File.OpenWrite(mapFilePath);
                 mapFile.SetLength(0); // Empty the file
@@ -229,33 +223,8 @@ namespace AeviMap
         /// Load a map's (relevant here) data, given its map ID.
         /// </summary>
         /// <param name="mapID">The ID of the map to load.</param>
-        private void LoadMap(byte mapID)
+        private void LoadMap(Map map)
         {
-            if (this.ROM == null)
-            {
-                MessageBox.Show("Load a ROM first.", "Can't load map !", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-
-            try
-            {
-                // Attempt to load the map, in case it fails
-                this.ROM.GetMap(mapID, this.INIFile);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                MessageBox.Show(String.Format("{0}\nPlease ensure that your INI file matches your ROM!", ex.Message), "Failed to load map", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-
-            if (mapID < 0 || mapID >= this.INIFile.GetProperty("nbofmaps"))
-            {
-                MessageBox.Show(String.Format("Valid map IDs are integers between 0 and {0} !", this.INIFile.GetProperty("nbofmaps")), "Invalid map ID !", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
             if(UnsavedChanges)
             {
                 DialogResult areFucksGiven = MessageBox.Show("There are unsaved changes!\nDo you want to save them before switching?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
@@ -279,14 +248,23 @@ namespace AeviMap
 
 
             IsMapLoaded = true;
-            this.LoadedMapID = mapID;
+            this.LoadedMap = map;
 
-            Size LoadedMapSize = this.LoadedMap().GetSize();
+            Size LoadedMapSize = this.LoadedMap.GetSize();
             mapRenderer.Size = new Size(LoadedMapSize.Width * sizeOfBlock, LoadedMapSize.Height * sizeOfBlock);
 
             // Update both of these since the tileset has been reloaded
             mapRenderer.Invalidate();
             blockPicker.Invalidate();
+        }
+
+        private void LoadMap(object sender, EventArgs e)
+        {
+            this.LoadMap(this.CustomMaps[
+               int.Parse( ((ToolStripMenuItem)sender).Name.Substring(3) )
+            ]);
+
+            MapIDLabel.Text = "Map ID: N/A";
         }
 
 
@@ -319,40 +297,40 @@ namespace AeviMap
         /// </summary>
         /// <param name="sender">Unused.</param>
         /// <param name="e">Unused.</param>
-        private void LoadMap(object sender, EventArgs e)
+        private void LoadROMMap(object sender, EventArgs e)
         {
+            if (this.ROM == null)
+            {
+                MessageBox.Show("Load a ROM first.", "Can't load map !", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+
             // Get the map's ID from the box
             byte mapID = (byte)selectMapName.SelectedIndex;
-            if (selectMapName.Text == "Select Map")
+            if (mapID == 0xFF)
             {
                 MessageBox.Show("Please select a map.");
                 return;
             }
-            selectMapID.Value = selectMapName.SelectedIndex;
-            
-            // Ensure it's an integer
-            if((decimal)mapID != selectMapName.SelectedIndex)
+
+
+            Map map;
+
+            try
             {
-                MessageBox.Show("Valid map IDs are integers !", "Invalid map ID", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Attempt to load the map, in case it fails
+                map = this.ROM.GetMap(mapID, this.INIFile);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show(String.Format("{0}\nPlease ensure that your INI file matches your ROM!", ex.Message), "Failed to load map", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
             }
             
-            // Let LoadMap check the ID is valid
-            LoadMap(mapID);
-        }
 
-        private void LoadMapID(object sender, EventArgs e)
-        {
-            byte mapID = (byte)selectMapID.Value;
-
-            if ((decimal)mapID != selectMapID.Value)
-            {
-                MessageBox.Show("Valid map IDs are integers !", "Invalid map ID", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            selectMapName.SelectedIndex = Convert.ToInt16(selectMapID.Value);
-
-            LoadMap(mapID);
+            LoadMap(map);
+            MapIDLabel.Text = String.Format("Map ID: {0}", mapID);
         }
 
 
@@ -409,7 +387,7 @@ namespace AeviMap
         private void ModifyHoveredBlock(uint blockY, uint blockX)
         {
             UnsavedChanges = true;
-            this.LoadedMap().SetBlockIDAt(blockX, blockY, SelectedBlock);
+            this.LoadedMap.SetBlockIDAt(blockX, blockY, SelectedBlock);
             mapRenderer.Invalidate();
         }
 
@@ -426,7 +404,7 @@ namespace AeviMap
                 break;
 
                 case MouseButtons.Right:
-                    ModifyPickedBlock(this.LoadedMap().GetBlockIDAt(HoveredBlockX, HoveredBlockY));
+                    ModifyPickedBlock(this.LoadedMap.GetBlockIDAt(HoveredBlockX, HoveredBlockY));
                 break;
             }
         }
@@ -445,7 +423,7 @@ namespace AeviMap
             if(IsMapLoaded)
             {
                 Graphics gfx = e.Graphics;
-                Size LoadedMapSize = this.LoadedMap().GetSize();
+                Size LoadedMapSize = this.LoadedMap.GetSize();
 
                 for(byte y = 0; y < LoadedMapSize.Height; y++)
                 {
@@ -455,7 +433,7 @@ namespace AeviMap
                         var ox = x * sizeOfBlock;
                         if(gfx.IsVisible(ox, oy, sizeOfBlock, sizeOfBlock))
                         {
-                            gfx.DrawImage(this.LoadedMap().GetBlockBMPAt(x, y), ox, oy, sizeOfBlock, sizeOfBlock);
+                            gfx.DrawImage(this.LoadedMap.GetBlockBMPAt(x, y), ox, oy, sizeOfBlock, sizeOfBlock);
                         }
                     }
                 }
@@ -477,7 +455,7 @@ namespace AeviMap
                     var oy = y * sizeOfBlock;
                     if(gfx.IsVisible(0, oy, sizeOfBlock, sizeOfBlock))
                     {
-                        gfx.DrawImage(this.LoadedMap().GetBlockBMP(y), 0, oy, sizeOfBlock, sizeOfBlock);
+                        gfx.DrawImage(this.LoadedMap.GetBlockBMP(y), 0, oy, sizeOfBlock, sizeOfBlock);
                     }
                 }
 
@@ -517,47 +495,6 @@ namespace AeviMap
             }
         }
 
-        /* This function will be replaced with the "New map" function
-        private void LoadMapFromBlk(object sender, EventArgs e)
-        {
-            if(this.ROM == null)
-            {
-                MessageBox.Show("Load a ROM first.", "Load map...", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            DialogResult isMapLoaded = openMapDialog.ShowDialog();
-            if(isMapLoaded != DialogResult.OK)
-            {
-                MessageBox.Show("Loading aborted.", "Load map...", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            FileStream mapFile = File.OpenRead(openMapDialog.FileName);
-            
-            LoadMap(sender, e);
-            if(mapLoadingFailed)
-            {
-                MessageBox.Show("Loading from .blk aborted.", "Load map...", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
-            }
-            else
-            {
-                if(mapFile.Length != loadedMapHeight * loadedMapWidth)
-                {
-                    DialogResult loadAnyways = MessageBox.Show("The file's size doesn't match the map's size !\nLoad anyways ?", "Load map...", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-                    if(loadAnyways != DialogResult.Yes)
-                    {
-                        mapFile.Close();
-                        return;
-                    }
-                }
-                mapFile.Read(loadedMapBlocks, 0, loadedMapHeight * loadedMapWidth);
-                unsavedChanges = true;
-            }
-            mapFile.Close();
-        }
-        */
-
         private void aboutAeviMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             about abt = new about();
@@ -566,14 +503,40 @@ namespace AeviMap
 
         private void NewMap(object sender, EventArgs e)
         {
-            mapCreator mapCrt = new mapCreator();
+            if(this.ROM == null)
+            {
+                MessageBox.Show("Load a ROM first.", "Can't create map!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+            mapCreator mapCrt = new mapCreator(this.ROM, this.INIFile);
             mapCrt.ShowDialog();
+
+            if (mapCrt.HasCreatedMap())
+            {
+                ToolStripMenuItem MapMenuItem = new ToolStripMenuItem(
+                    mapCrt.CreatedMapName, null, LoadMap, String.Format("Map{0}", this.CustomMaps.Count)
+                );
+
+                NoMapHereItem.Text = "Custom maps";
+                MapMenu.DropDownItems.Add(MapMenuItem);
+                this.CustomMaps.Add(mapCrt.GetCreatedMap());
+
+                // Load the newly-created map
+                MapMenuItem.PerformClick();
+            }
         }
 
         private void EditMap(object sender, EventArgs e)
         {
-            editMapData mapEdt = new editMapData();
-            mapEdt.ShowDialog();
+            if (this.ROM == null)
+            {
+                MessageBox.Show("Load a ROM first.", "Can't edit map!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+            headerEditor headEdt = new headerEditor(this.ROM, this.INIFile);
+            headEdt.ShowDialog();
         }
     }
 }

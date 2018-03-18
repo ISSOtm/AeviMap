@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class INI_File
+    public class INI_File
     {
         /// <summary>
         /// Lists the accepted hexadecimal prefixes.
@@ -27,16 +27,26 @@ namespace AeviMap
 
 
         private Dictionary<string, Property> properties = new Dictionary<string, Property>();
-        private List<string> mapNames = new List<string>(new string[] {
-                "Startham",
-                "Debug Room",
-                "Intro Map",
-                "Startham Forest",
-                "Player House 1F",
-                "Player House 2F",
-                "Startham Empty House",
-                "Startham Large House"
-            });
+        private List<string> mapNames = new List<string>(new string[]
+        {
+            "Startham",
+            "Debug Room",
+            "Intro Map",
+            "Startham Forest",
+            "Player House 1F",
+            "Player House 2F",
+            "Startham Empty House",
+            "Startham Large House"
+        });
+        private List<string> tilesetNames = new List<string>(new string[]
+        {
+            "Overworld",
+            "Intro",
+            "Interior",
+            "Dark Interior",
+            "Ruins",
+            "Beach"
+        });
         private Dictionary<string, SectionParser> parsers = new Dictionary<string, SectionParser>();
 
 
@@ -67,6 +77,7 @@ namespace AeviMap
             // Register section parsers
             parsers.Add("properties", new PropertiesParser());
             parsers.Add("map names", new MapNamesParser());
+            parsers.Add("tilesets", new TilesetParser());
         }
 
 
@@ -297,7 +308,60 @@ namespace AeviMap
             this.mapNames = new List<string>();
         }
 
-        
+
+        /// <summary>
+        /// Gets a tileset's display name.
+        /// </summary>
+        /// <param name="tilesetID">The ID of the tileset.</param>
+        /// <returns>The map's name, if defined. Otherwise, returns a placeholder name.</returns>
+        public string GetTilesetName(byte tilesetID)
+        {
+            if (this.tilesetNames == null || tilesetID >= this.tilesetNames.Count || this.tilesetNames[tilesetID] == null)
+            {
+                return String.Format("??? (ID ${0})", MapEditor.decToHex(tilesetID, 2));
+            }
+
+            return this.mapNames[tilesetID];
+        }
+
+        /// <summary>
+        /// Gets all defined tileset names.
+        /// </summary>
+        /// <returns>A List of all tileset names</returns>
+        public List<string> GetTilesetNames()
+        {
+            return this.tilesetNames;
+        }
+
+        /// <summary>
+        /// Sets a tileset's display name.
+        /// </summary>
+        /// <param name="tilesetID">The ID of the tileset to set the name of.</param>
+        /// <param name="name">The name to give to the tileset.</param>
+        private void SetTilesetName(byte tilesetID, string name)
+        {
+            this.tilesetNames[tilesetID] = name;
+        }
+
+        /// <summary>
+        /// Adds a new tileset name at the end of the list.
+        /// Please do not use unless reading from the INI file, or adding a new tileset.
+        /// </summary>
+        /// <param name="name">The name to be added.</param>
+        private void AddTilesetName(string name)
+        {
+            this.tilesetNames.Add(name);
+        }
+
+        /// <summary>
+        /// Remove all currently registered tileset names.
+        /// </summary>
+        private void ResetTilesetNames()
+        {
+            this.tilesetNames = new List<string>();
+        }
+
+
         /// <summary>
         /// Defines a parser for one type of INI section.
         /// The parser is also responsible for generating the content of a new INI file.
@@ -408,6 +472,24 @@ namespace AeviMap
             public override List<string> GetTextRepresentation(INI_File file)
             {
                 return file.GetMapNames();
+            }
+        }
+
+        class TilesetParser : SectionParser
+        {
+            public override void BeginRead(INI_File file)
+            {
+                file.ResetTilesetNames();
+            }
+
+            public override void ProcessLine(INI_File file, string line)
+            {
+                file.AddTilesetName(line);
+            }
+
+            public override List<string> GetTextRepresentation(INI_File file)
+            {
+                return file.GetTilesetNames();
             }
         }
     }

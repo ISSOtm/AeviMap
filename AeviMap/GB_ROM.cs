@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class GB_ROM
+    public class GB_ROM
     {
         private byte[] rawData;
         // These store the loaded assets to avoid re-loading them twice (especially useful for tilesets)

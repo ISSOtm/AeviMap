@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class NPC
+    public class NPC
     {
         private InteractionBox Box;
 

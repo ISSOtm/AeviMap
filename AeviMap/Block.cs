@@ -9,15 +9,21 @@ using System.Drawing.Imaging;
 
 namespace AeviMap
 {
-    class Block
+    public class Block
     {
         private byte size;
         private Bitmap bmp;
 
-        //          Block's tile IDs, tile's attribs, loaded tiles' data, loaded palettes
+        public byte[] rawIDs { get; }
+        public byte[] attributes { get; }
+        
+        
+        // Block's          tile IDs,      tile's attribs,        loaded tiles' data,    loaded palettes
         public Block(byte[] rawIDs, byte[] attributes, byte[][][] rawTiles, CGBPalette[] palettes, INI_File INIFile)
         {
             this.size = (byte)INIFile.GetProperty("sizeofblock");
+            this.rawIDs = (byte[])rawIDs.Clone();
+            this.attributes = (byte[])attributes.Clone();
 
 
             UInt16[] IDs = new UInt16[4];

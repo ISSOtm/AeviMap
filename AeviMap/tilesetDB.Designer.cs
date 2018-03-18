@@ -63,46 +63,6 @@ namespace AeviMap {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap beach_tileset {
-            get {
-                object obj = ResourceManager.GetObject("beach_tileset", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap indoor_tileset {
-            get {
-                object obj = ResourceManager.GetObject("indoor_tileset", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap outdoor_tileset {
-            get {
-                object obj = ResourceManager.GetObject("outdoor_tileset", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tilesetruins {
-            get {
-                object obj = ResourceManager.GetObject("tilesetruins", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap unknown_tileset {
             get {
                 object obj = ResourceManager.GetObject("unknown_tileset", resourceCulture);

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class Tileset
+    public class Tileset
     {
         public byte nbOfBlocks;
         public byte nbOfPalettes = 8;
@@ -143,6 +144,83 @@ namespace AeviMap
         public Bitmap GetBlockBMP(byte blockID)
         {
             return this.blocks[blockID].GetBMP();
+        }
+
+
+        public Bitmap GetPreviewImage()
+        {
+            // Try to determine the palette each tile uses
+            byte[][] Palettes = new byte[2][] { new byte[256], new byte[256] };
+            for(int i = 0; i < 256; i++)
+            {
+                Palettes[0][i] = 0xff;
+                Palettes[1][i] = 0xff;
+            }
+
+            for(byte blockID = 0; blockID < this.nbOfBlocks; blockID++)
+            {
+                byte[] IDs = this.blocks[blockID].rawIDs;
+                byte[] attributes = this.blocks[blockID].attributes;
+
+                for(byte i = 0; i < 4; i++)
+                {
+                    byte bank = (byte)(((attributes[i] & 0x08) != 0) ? 1 : 0);
+                    if (Palettes[bank][IDs[i]] == 0xff)
+                    {
+                        Palettes[bank][IDs[i]] = (byte)(attributes[i] & 0x07);
+                    }
+                }
+            }
+
+
+            Size size = tilesetDB.unknown_tileset.Size;
+            Bitmap BMP = new Bitmap(size.Width, size.Height, PixelFormat.Format16bppRgb555);
+
+            UInt16 TileID = 128;
+            byte VRAMBank = 0;
+
+            for (byte y = 0; y < size.Height / 8; y++)
+            {
+                for(byte x = 0; x < size.Width / 8; x++)
+                {
+                    for(byte dy = 0; dy < 8; dy++)
+                    {
+                        byte layer0 = this.tiles[VRAMBank][TileID][dy * 2];
+                        byte layer1 = this.tiles[VRAMBank][TileID][dy * 2 + 1];
+                        for(byte dx = 0; dx < 8; dx++)
+                        {
+                            byte Color = 0;
+                            if((layer0 & 0x80) != 0)
+                            {
+                                Color++;
+                            }
+                            if((layer1 & 0x80) != 0)
+                            {
+                                Color += 2;
+                            }
+
+                            byte PaletteID = Palettes[VRAMBank][TileID];
+                            if(PaletteID == 0xff)
+                            {
+                                PaletteID = 0;
+                            }
+                            BMP.SetPixel(x * 8 + dx, y * 8 + dy, this.BGPalettes[PaletteID].GetColor(Color));
+
+                            layer0 <<= 1;
+                            layer1 <<= 1;
+                        }
+                    }
+
+                    TileID++;
+                    if(TileID == 256)
+                    {
+                        TileID = 128;
+                        VRAMBank = 1;
+                    }
+                }
+            }
+
+            return BMP;
         }
     }
 }

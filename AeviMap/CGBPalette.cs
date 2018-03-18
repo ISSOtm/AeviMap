@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class CGBPalette
+    public class CGBPalette
     {
         public static byte paletteSize = 4 * 3;
 

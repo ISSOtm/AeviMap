@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    enum Thread2Function
+    public enum Thread2Function
     {
         THREAD2_DISABLED,
 

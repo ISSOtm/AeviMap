@@ -36,28 +36,28 @@
             this.saveMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.CloseAeviMapItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MapMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.editMapDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.NoMapHereItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutAeviMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectMapID = new System.Windows.Forms.NumericUpDown();
             this.loadMapButton = new System.Windows.Forms.Button();
             this.mapRendererPanel = new System.Windows.Forms.Panel();
+            this.mapRenderer = new System.Windows.Forms.PictureBox();
             this.openROMDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
             this.blockPickerPanel = new System.Windows.Forms.Panel();
+            this.blockPicker = new System.Windows.Forms.PictureBox();
             this.openMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.selectMapName = new System.Windows.Forms.ComboBox();
-            this.miLab = new System.Windows.Forms.Label();
-            this.loadMapID = new System.Windows.Forms.Button();
-            this.blockPicker = new System.Windows.Forms.PictureBox();
-            this.mapRenderer = new System.Windows.Forms.PictureBox();
-            this.MapMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.editMapDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MapIDLabel = new System.Windows.Forms.Label();
+            this.importBLKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.selectMapID)).BeginInit();
             this.mapRendererPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).BeginInit();
             this.blockPickerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blockPicker)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).BeginInit();
             this.SuspendLayout();
             // 
             // menuBar
@@ -76,10 +76,11 @@
             // 
             this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoadROMItem,
-            this.newMapItem,
-            this.saveMapItem,
+            this.CloseAeviMapItem,
             this.toolStripSeparator1,
-            this.CloseAeviMapItem});
+            this.newMapItem,
+            this.importBLKToolStripMenuItem,
+            this.saveMapItem});
             this.FileMenu.Name = "FileMenu";
             this.FileMenu.Size = new System.Drawing.Size(37, 20);
             this.FileMenu.Text = "File";
@@ -96,6 +97,7 @@
             // newMapItem
             // 
             this.newMapItem.Name = "newMapItem";
+            this.newMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newMapItem.Size = new System.Drawing.Size(182, 22);
             this.newMapItem.Text = "New Map...";
             this.newMapItem.Click += new System.EventHandler(this.NewMap);
@@ -103,9 +105,9 @@
             // saveMapItem
             // 
             this.saveMapItem.Name = "saveMapItem";
-            this.saveMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.saveMapItem.Size = new System.Drawing.Size(182, 22);
-            this.saveMapItem.Text = "Save map...";
+            this.saveMapItem.Text = "Export BLK...";
             this.saveMapItem.ToolTipText = "Save the current map to a .blk file";
             this.saveMapItem.Click += new System.EventHandler(this.SaveMap);
             // 
@@ -117,9 +119,40 @@
             // CloseAeviMapItem
             // 
             this.CloseAeviMapItem.Name = "CloseAeviMapItem";
+            this.CloseAeviMapItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.CloseAeviMapItem.Size = new System.Drawing.Size(182, 22);
             this.CloseAeviMapItem.Text = "Close";
             this.CloseAeviMapItem.Click += new System.EventHandler(this.closeApp);
+            // 
+            // MapMenu
+            // 
+            this.MapMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editMapDataToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.NoMapHereItem});
+            this.MapMenu.Name = "MapMenu";
+            this.MapMenu.Size = new System.Drawing.Size(43, 20);
+            this.MapMenu.Text = "Map";
+            // 
+            // editMapDataToolStripMenuItem
+            // 
+            this.editMapDataToolStripMenuItem.Name = "editMapDataToolStripMenuItem";
+            this.editMapDataToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.editMapDataToolStripMenuItem.Text = "Edit Map Header...";
+            this.editMapDataToolStripMenuItem.Click += new System.EventHandler(this.EditMap);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(168, 6);
+            // 
+            // NoMapHereItem
+            // 
+            this.NoMapHereItem.Enabled = false;
+            this.NoMapHereItem.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.NoMapHereItem.Name = "NoMapHereItem";
+            this.NoMapHereItem.Size = new System.Drawing.Size(171, 22);
+            this.NoMapHereItem.Text = "No map here";
             // 
             // HelpMenu
             // 
@@ -137,14 +170,6 @@
             this.aboutAeviMapToolStripMenuItem.Text = "About AeviMap";
             this.aboutAeviMapToolStripMenuItem.Click += new System.EventHandler(this.aboutAeviMapToolStripMenuItem_Click);
             // 
-            // selectMapID
-            // 
-            this.selectMapID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectMapID.Location = new System.Drawing.Point(685, 29);
-            this.selectMapID.Name = "selectMapID";
-            this.selectMapID.Size = new System.Drawing.Size(70, 20);
-            this.selectMapID.TabIndex = 3;
-            // 
             // loadMapButton
             // 
             this.loadMapButton.Location = new System.Drawing.Point(139, 26);
@@ -153,7 +178,7 @@
             this.loadMapButton.TabIndex = 5;
             this.loadMapButton.Text = "Load Map";
             this.loadMapButton.UseVisualStyleBackColor = true;
-            this.loadMapButton.Click += new System.EventHandler(this.LoadMap);
+            this.loadMapButton.Click += new System.EventHandler(this.LoadROMMap);
             // 
             // mapRendererPanel
             // 
@@ -166,6 +191,20 @@
             this.mapRendererPanel.Name = "mapRendererPanel";
             this.mapRendererPanel.Size = new System.Drawing.Size(692, 526);
             this.mapRendererPanel.TabIndex = 6;
+            // 
+            // mapRenderer
+            // 
+            this.mapRenderer.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.mapRenderer.Location = new System.Drawing.Point(0, 0);
+            this.mapRenderer.Name = "mapRenderer";
+            this.mapRenderer.Size = new System.Drawing.Size(692, 526);
+            this.mapRenderer.TabIndex = 2;
+            this.mapRenderer.TabStop = false;
+            this.mapRenderer.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderMap);
+            this.mapRenderer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ClickMapRenderer);
+            this.mapRenderer.MouseEnter += new System.EventHandler(this.MouseEnterMapRenderer);
+            this.mapRenderer.MouseLeave += new System.EventHandler(this.MouseLeaveMapRenderer);
+            this.mapRenderer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseMoveMapRenderer);
             // 
             // openROMDialog
             // 
@@ -190,6 +229,20 @@
             this.blockPickerPanel.Size = new System.Drawing.Size(45, 526);
             this.blockPickerPanel.TabIndex = 7;
             // 
+            // blockPicker
+            // 
+            this.blockPicker.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.blockPicker.Location = new System.Drawing.Point(0, 0);
+            this.blockPicker.Name = "blockPicker";
+            this.blockPicker.Size = new System.Drawing.Size(16, 526);
+            this.blockPicker.TabIndex = 0;
+            this.blockPicker.TabStop = false;
+            this.blockPicker.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderBlockPicker);
+            this.blockPicker.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ClickBlockPicker);
+            this.blockPicker.MouseEnter += new System.EventHandler(this.MouseEnterBlockPicker);
+            this.blockPicker.MouseLeave += new System.EventHandler(this.MouseLeaveBlockPicker);
+            this.blockPicker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseMoveBlockPicker);
+            // 
             // openMapDialog
             // 
             this.openMapDialog.DefaultExt = "blk";
@@ -205,82 +258,34 @@
             this.selectMapName.TabIndex = 8;
             this.selectMapName.Text = "Select Map";
             // 
-            // miLab
+            // MapIDLabel
             // 
-            this.miLab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.miLab.AutoSize = true;
-            this.miLab.Location = new System.Drawing.Point(637, 31);
-            this.miLab.Name = "miLab";
-            this.miLab.Size = new System.Drawing.Size(42, 13);
-            this.miLab.TabIndex = 9;
-            this.miLab.Text = "Map ID";
+            this.MapIDLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MapIDLabel.AutoSize = true;
+            this.MapIDLabel.Location = new System.Drawing.Point(684, 30);
+            this.MapIDLabel.Name = "MapIDLabel";
+            this.MapIDLabel.Size = new System.Drawing.Size(71, 13);
+            this.MapIDLabel.TabIndex = 9;
+            this.MapIDLabel.Text = "Map ID : N/A";
+            this.MapIDLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // loadMapID
+            // importBLKToolStripMenuItem
             // 
-            this.loadMapID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadMapID.Location = new System.Drawing.Point(556, 27);
-            this.loadMapID.Name = "loadMapID";
-            this.loadMapID.Size = new System.Drawing.Size(75, 23);
-            this.loadMapID.TabIndex = 10;
-            this.loadMapID.Text = "Load ID";
-            this.loadMapID.UseVisualStyleBackColor = true;
-            this.loadMapID.Click += new System.EventHandler(this.LoadMapID);
-            // 
-            // blockPicker
-            // 
-            this.blockPicker.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.blockPicker.Location = new System.Drawing.Point(0, 0);
-            this.blockPicker.Name = "blockPicker";
-            this.blockPicker.Size = new System.Drawing.Size(16, 526);
-            this.blockPicker.TabIndex = 0;
-            this.blockPicker.TabStop = false;
-            this.blockPicker.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderBlockPicker);
-            this.blockPicker.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ClickBlockPicker);
-            this.blockPicker.MouseEnter += new System.EventHandler(this.MouseEnterBlockPicker);
-            this.blockPicker.MouseLeave += new System.EventHandler(this.MouseLeaveBlockPicker);
-            this.blockPicker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseMoveBlockPicker);
-            // 
-            // mapRenderer
-            // 
-            this.mapRenderer.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.mapRenderer.Location = new System.Drawing.Point(0, 0);
-            this.mapRenderer.Name = "mapRenderer";
-            this.mapRenderer.Size = new System.Drawing.Size(692, 526);
-            this.mapRenderer.TabIndex = 2;
-            this.mapRenderer.TabStop = false;
-            this.mapRenderer.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderMap);
-            this.mapRenderer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ClickMapRenderer);
-            this.mapRenderer.MouseEnter += new System.EventHandler(this.MouseEnterMapRenderer);
-            this.mapRenderer.MouseLeave += new System.EventHandler(this.MouseLeaveMapRenderer);
-            this.mapRenderer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseMoveMapRenderer);
-            // 
-            // MapMenu
-            // 
-            this.MapMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editMapDataToolStripMenuItem});
-            this.MapMenu.Name = "MapMenu";
-            this.MapMenu.Size = new System.Drawing.Size(43, 20);
-            this.MapMenu.Text = "Map";
-            // 
-            // editMapDataToolStripMenuItem
-            // 
-            this.editMapDataToolStripMenuItem.Name = "editMapDataToolStripMenuItem";
-            this.editMapDataToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.editMapDataToolStripMenuItem.Text = "Edit Map Data...";
-            this.editMapDataToolStripMenuItem.Click += new System.EventHandler(this.EditMap);
+            this.importBLKToolStripMenuItem.Name = "importBLKToolStripMenuItem";
+            this.importBLKToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.importBLKToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.importBLKToolStripMenuItem.Text = "Import BLK...";
             // 
             // MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 594);
-            this.Controls.Add(this.loadMapID);
-            this.Controls.Add(this.miLab);
+            this.Controls.Add(this.MapIDLabel);
             this.Controls.Add(this.selectMapName);
             this.Controls.Add(this.blockPickerPanel);
             this.Controls.Add(this.mapRendererPanel);
             this.Controls.Add(this.loadMapButton);
-            this.Controls.Add(this.selectMapID);
             this.Controls.Add(this.menuBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuBar;
@@ -289,11 +294,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfirmClose);
             this.menuBar.ResumeLayout(false);
             this.menuBar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.selectMapID)).EndInit();
             this.mapRendererPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).EndInit();
             this.blockPickerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.blockPicker)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mapRenderer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,7 +309,6 @@
         private System.Windows.Forms.ToolStripMenuItem LoadROMItem;
         private System.Windows.Forms.ToolStripMenuItem CloseAeviMapItem;
         private System.Windows.Forms.PictureBox mapRenderer;
-        private System.Windows.Forms.NumericUpDown selectMapID;
         private System.Windows.Forms.Button loadMapButton;
         private System.Windows.Forms.Panel mapRendererPanel;
         private System.Windows.Forms.OpenFileDialog openROMDialog;
@@ -318,11 +321,13 @@
         private System.Windows.Forms.ToolStripMenuItem HelpMenu;
         private System.Windows.Forms.ToolStripMenuItem aboutAeviMapToolStripMenuItem;
         private System.Windows.Forms.ComboBox selectMapName;
-        private System.Windows.Forms.Label miLab;
-        private System.Windows.Forms.Button loadMapID;
+        private System.Windows.Forms.Label MapIDLabel;
         private System.Windows.Forms.ToolStripMenuItem newMapItem;
         private System.Windows.Forms.ToolStripMenuItem MapMenu;
         private System.Windows.Forms.ToolStripMenuItem editMapDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem NoMapHereItem;
+        private System.Windows.Forms.ToolStripMenuItem importBLKToolStripMenuItem;
     }
 }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class Map
+    public class Map
     {
         private byte mapID;
         private byte bank;
@@ -39,6 +39,17 @@ namespace AeviMap
 
 
         private byte[,] rawMap;
+
+
+        // Init a barebones map
+        public Map(INI_File ini, GB_ROM ROM, byte TilesetID, byte height, byte width)
+        {
+            this.tileset = ROM.GetTileset(TilesetID, ini);
+            this.height = height;
+            this.width = width;
+
+            this.rawMap = new byte[this.height, this.width];
+        }
 
         public Map(INI_File properties, GB_ROM ROM, byte mapID)
         {

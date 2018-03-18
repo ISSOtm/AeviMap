@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    enum InteractionType
+    public enum InteractionType
     {
         WALK_INTERACT,
         BTN_INTERACT,
@@ -15,7 +15,7 @@ namespace AeviMap
     }
 
 
-    abstract class Interaction
+    public abstract class Interaction
     {
         public InteractionType Type { get; }
 
@@ -86,7 +86,7 @@ namespace AeviMap
     }
 
 
-    class LoadingZone : Interaction
+    public class LoadingZone : Interaction
     {
         public Thread2Function Thread2Func { get; }
         public byte TargetWarpID { get; }
@@ -104,7 +104,7 @@ namespace AeviMap
     }
 
 
-    class InteractionTrigger : Interaction
+    public class InteractionTrigger : Interaction
     {
         public UInt16 TextScriptPtr { get; }
 

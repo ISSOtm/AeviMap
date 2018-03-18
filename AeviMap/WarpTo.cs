@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    class WarpTo
+    public class WarpTo
     {
         public UInt16 YPos { get; }
         public UInt16 XPos { get; }

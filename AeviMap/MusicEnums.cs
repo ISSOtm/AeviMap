@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    enum MusicID
+    public enum MusicID
     {
         MUSIC_SAFE_PLACE,
         MUSIC_BATTLE_1,
@@ -25,7 +25,7 @@ namespace AeviMap
 
 
 
-    enum SFX_ID
+    public enum SFX_ID
     {
         SFX_NPC_SURPRISE,
         SFX_TEXT_CONFIRM,

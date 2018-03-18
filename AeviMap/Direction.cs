@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AeviMap
 {
-    enum Direction
+    public enum Direction
     {
         UP,
         DOWN,
