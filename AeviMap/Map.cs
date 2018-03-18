@@ -42,13 +42,20 @@ namespace AeviMap
 
 
         // Init a barebones map
-        public Map(INI_File ini, GB_ROM ROM, byte TilesetID, byte height, byte width)
+        public Map(INI_File ini, GB_ROM ROM, byte TilesetID, byte height, byte width, byte FillerBlockID)
         {
             this.tileset = ROM.GetTileset(TilesetID, ini);
             this.height = height;
             this.width = width;
 
             this.rawMap = new byte[this.height, this.width];
+            for(byte y = 0; y < this.height; y++)
+            {
+                for(byte x = 0; x < this.height; x++)
+                {
+                    this.rawMap[y, x] = FillerBlockID;
+                }
+            }
         }
 
         public Map(INI_File properties, GB_ROM ROM, byte mapID)

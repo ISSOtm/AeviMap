@@ -124,7 +124,7 @@ namespace AeviMap
         {
             if(this.CreatedMap == null)
             {
-                this.CreatedMap = new Map(this.ini, this.ROM, this.TilesetID, this.MapHeight, this.MapWidth);
+                this.CreatedMap = new Map(this.ini, this.ROM, this.TilesetID, this.MapHeight, this.MapWidth, this.FillerID);
             }
             return this.CreatedMap;
         }

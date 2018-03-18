@@ -137,21 +137,22 @@
             // editMapDataToolStripMenuItem
             // 
             this.editMapDataToolStripMenuItem.Name = "editMapDataToolStripMenuItem";
-            this.editMapDataToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.editMapDataToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.editMapDataToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.editMapDataToolStripMenuItem.Text = "Edit Map Header...";
             this.editMapDataToolStripMenuItem.Click += new System.EventHandler(this.EditMap);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(211, 6);
             // 
             // NoMapHereItem
             // 
             this.NoMapHereItem.Enabled = false;
             this.NoMapHereItem.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.NoMapHereItem.Name = "NoMapHereItem";
-            this.NoMapHereItem.Size = new System.Drawing.Size(171, 22);
+            this.NoMapHereItem.Size = new System.Drawing.Size(214, 22);
             this.NoMapHereItem.Text = "No map here";
             // 
             // HelpMenu
