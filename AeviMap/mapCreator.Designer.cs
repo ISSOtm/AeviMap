@@ -36,30 +36,31 @@
             this.mapWidth = new System.Windows.Forms.Label();
             this.mapYBox = new System.Windows.Forms.NumericUpDown();
             this.mapDataGrp = new System.Windows.Forms.GroupBox();
+            this.FillerBlockID = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.FillerBlockPreview = new System.Windows.Forms.PictureBox();
             this.mapNameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tilesetPrev = new System.Windows.Forms.PictureBox();
             this.tilesetSelLab = new System.Windows.Forms.Label();
             this.tilesetSel = new System.Windows.Forms.ComboBox();
             this.cancelBtn = new System.Windows.Forms.Button();
-            this.FillerBlockPreview = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.FillerBlockID = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.mapXBox)).BeginInit();
             this.mapDGrp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapYBox)).BeginInit();
             this.mapDataGrp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tilesetPrev)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FillerBlockPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FillerBlockID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FillerBlockPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilesetPrev)).BeginInit();
             this.SuspendLayout();
             // 
             // cBtn
             // 
+            this.cBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.cBtn.Location = new System.Drawing.Point(333, 318);
             this.cBtn.Name = "cBtn";
             this.cBtn.Size = new System.Drawing.Size(75, 23);
-            this.cBtn.TabIndex = 0;
+            this.cBtn.TabIndex = 6;
             this.cBtn.Text = "Create";
             this.cBtn.UseVisualStyleBackColor = true;
             this.cBtn.Click += new System.EventHandler(this.CreateMap);
@@ -122,7 +123,7 @@
             0});
             this.mapYBox.Name = "mapYBox";
             this.mapYBox.Size = new System.Drawing.Size(120, 20);
-            this.mapYBox.TabIndex = 3;
+            this.mapYBox.TabIndex = 2;
             this.mapYBox.Value = new decimal(new int[] {
             1,
             0,
@@ -146,12 +147,42 @@
             this.mapDataGrp.TabStop = false;
             this.mapDataGrp.Text = "Map Data";
             // 
+            // FillerBlockID
+            // 
+            this.FillerBlockID.Location = new System.Drawing.Point(82, 121);
+            this.FillerBlockID.Maximum = new decimal(new int[] {
+            63,
+            0,
+            0,
+            0});
+            this.FillerBlockID.Name = "FillerBlockID";
+            this.FillerBlockID.Size = new System.Drawing.Size(120, 20);
+            this.FillerBlockID.TabIndex = 5;
+            this.FillerBlockID.ValueChanged += new System.EventHandler(this.updateBlockPreview);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 123);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Filler block";
+            // 
+            // FillerBlockPreview
+            // 
+            this.FillerBlockPreview.Location = new System.Drawing.Point(221, 99);
+            this.FillerBlockPreview.Name = "FillerBlockPreview";
+            this.FillerBlockPreview.Size = new System.Drawing.Size(64, 64);
+            this.FillerBlockPreview.TabIndex = 8;
+            this.FillerBlockPreview.TabStop = false;
+            // 
             // mapNameBox
             // 
             this.mapNameBox.Location = new System.Drawing.Point(82, 33);
             this.mapNameBox.Name = "mapNameBox";
             this.mapNameBox.Size = new System.Drawing.Size(120, 20);
-            this.mapNameBox.TabIndex = 7;
+            this.mapNameBox.TabIndex = 3;
             // 
             // label1
             // 
@@ -191,54 +222,27 @@
             this.tilesetSel.Location = new System.Drawing.Point(82, 67);
             this.tilesetSel.Name = "tilesetSel";
             this.tilesetSel.Size = new System.Drawing.Size(120, 21);
-            this.tilesetSel.TabIndex = 0;
+            this.tilesetSel.TabIndex = 4;
             this.tilesetSel.Text = "Select Tileset";
             this.tilesetSel.SelectedIndexChanged += new System.EventHandler(this.updateTilesetPreview);
             // 
             // cancelBtn
             // 
+            this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelBtn.Location = new System.Drawing.Point(252, 318);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 4;
+            this.cancelBtn.TabIndex = 0;
+            this.cancelBtn.TabStop = false;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.CloseDialog);
-            // 
-            // FillerBlockPreview
-            // 
-            this.FillerBlockPreview.Location = new System.Drawing.Point(221, 99);
-            this.FillerBlockPreview.Name = "FillerBlockPreview";
-            this.FillerBlockPreview.Size = new System.Drawing.Size(64, 64);
-            this.FillerBlockPreview.TabIndex = 8;
-            this.FillerBlockPreview.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 123);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Filler block";
-            // 
-            // FillerBlockID
-            // 
-            this.FillerBlockID.Location = new System.Drawing.Point(82, 121);
-            this.FillerBlockID.Maximum = new decimal(new int[] {
-            63,
-            0,
-            0,
-            0});
-            this.FillerBlockID.Name = "FillerBlockID";
-            this.FillerBlockID.Size = new System.Drawing.Size(120, 20);
-            this.FillerBlockID.TabIndex = 6;
-            this.FillerBlockID.ValueChanged += new System.EventHandler(this.updateBlockPreview);
             // 
             // mapCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelBtn;
             this.ClientSize = new System.Drawing.Size(420, 353);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.mapDataGrp);
@@ -256,9 +260,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.mapYBox)).EndInit();
             this.mapDataGrp.ResumeLayout(false);
             this.mapDataGrp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tilesetPrev)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FillerBlockPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FillerBlockID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FillerBlockPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilesetPrev)).EndInit();
             this.ResumeLayout(false);
 
         }

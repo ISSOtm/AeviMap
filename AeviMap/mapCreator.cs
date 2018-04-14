@@ -71,6 +71,7 @@ namespace AeviMap
             this.updateBlockPreview(null, null);
         }
 
+
         private void updateTilesetPreview(object sender, EventArgs e)
         {
             if (this.TilesetID >= this.ini.GetProperty("nboftilesets"))
@@ -83,6 +84,15 @@ namespace AeviMap
                 this.updateBlockPreview(null, null);
             }
         }
+
+        private void updateBlockPreview(object sender, EventArgs e)
+        {
+            if (this.TilesetID < this.ini.GetProperty("nboftilesets"))
+            {
+                this.FillerBlockPreview.Image = new Bitmap(this.ROM.GetTileset(this.TilesetID, this.ini).GetBlockBMP(this.FillerID), FillerBlockPreview.Size);
+            }
+        }
+
 
         private void CloseDialog(object sender, EventArgs e)
         {
@@ -127,14 +137,6 @@ namespace AeviMap
                 this.CreatedMap = new Map(this.ini, this.ROM, this.TilesetID, this.MapHeight, this.MapWidth, this.FillerID);
             }
             return this.CreatedMap;
-        }
-
-        private void updateBlockPreview(object sender, EventArgs e)
-        {
-            if(this.TilesetID < this.ini.GetProperty("nboftilesets"))
-            {
-                this.FillerBlockPreview.Image = new Bitmap(this.ROM.GetTileset(this.TilesetID, this.ini).GetBlockBMP(this.FillerID), FillerBlockPreview.Size);
-            }
         }
     }
 }
