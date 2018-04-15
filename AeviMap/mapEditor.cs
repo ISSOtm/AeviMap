@@ -555,6 +555,11 @@ namespace AeviMap
 
             headerEditor headEdt = new headerEditor(this.ROM, this.INIFile);
             headEdt.ShowDialog();
+            // If the modifications haven't been cancelled, reload the map
+            if(headEdt.header != null)
+            {
+                this.LoadMap(headEdt.map);
+            }
         }
     }
 }
