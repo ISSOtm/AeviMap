@@ -10,6 +10,9 @@ namespace AeviMap
 {
     public class Tileset
     {
+        public byte ID { get; private set; }
+
+
         public byte nbOfBlocks;
         public byte nbOfPalettes = 8;
 
@@ -23,6 +26,8 @@ namespace AeviMap
 
         public Tileset(INI_File properties, GB_ROM ROM, byte tilesetID)
         {
+            this.ID = tilesetID;
+
             this.nbOfBlocks = (byte)properties.GetProperty("nbofblocks");
             blocks = new Block[this.nbOfBlocks];
             BGPalettes = new CGBPalette[this.nbOfBlocks];
