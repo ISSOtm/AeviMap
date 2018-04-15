@@ -47,6 +47,19 @@ namespace AeviMap
             "Ruins",
             "Beach"
         });
+        private List<string> songNames = new List<string>(new string[]
+        {
+            "None",
+            "Safe Place",
+            "Battle",
+            "File Select",
+            "Overworld",
+            "Boss Fight",
+            "Scare Chord",
+            "Neo Safe Place",
+            "Avocado Invaders",
+            "Forest"
+        });
         private Dictionary<string, SectionParser> parsers = new Dictionary<string, SectionParser>();
 
 
@@ -78,6 +91,7 @@ namespace AeviMap
             parsers.Add("properties", new PropertiesParser());
             parsers.Add("map names", new MapNamesParser());
             parsers.Add("tilesets", new TilesetParser());
+            parsers.Add("music names", new SongNamesParser());
         }
 
 
@@ -363,6 +377,59 @@ namespace AeviMap
 
 
         /// <summary>
+        /// Gets a song's display name.
+        /// </summary>
+        /// <param name="songID">The ID of the song.</param>
+        /// <returns>The map's name, if defined. Otherwise, returns a placeholder name.</returns>
+        public string GetSongName(byte songID)
+        {
+            if (this.songNames == null || songID >= this.songNames.Count || this.songNames[songID] == null)
+            {
+                return String.Format("??? (ID ${0})", MapEditor.decToHex(songID, 2));
+            }
+
+            return this.songNames[songID];
+        }
+
+        /// <summary>
+        /// Gets all defined song names.
+        /// </summary>
+        /// <returns>A List of all song names</returns>
+        public List<string> GetSongNames()
+        {
+            return this.songNames;
+        }
+
+        /// <summary>
+        /// Sets a song's display name.
+        /// </summary>
+        /// <param name="songID">The ID of the song to set the name of.</param>
+        /// <param name="name">The name to give to the song.</param>
+        private void SetSongName(byte songID, string name)
+        {
+            this.songNames[songID] = name;
+        }
+
+        /// <summary>
+        /// Adds a new song name at the end of the list.
+        /// Please do not use unless reading from the INI file, or adding a new song.
+        /// </summary>
+        /// <param name="name">The name to be added.</param>
+        private void AddSongName(string name)
+        {
+            this.songNames.Add(name);
+        }
+
+        /// <summary>
+        /// Remove all currently registered song names.
+        /// </summary>
+        private void ResetSongNames()
+        {
+            this.songNames = new List<string>();
+        }
+
+
+        /// <summary>
         /// Defines a parser for one type of INI section.
         /// The parser is also responsible for generating the content of a new INI file.
         /// </summary>
@@ -490,6 +557,24 @@ namespace AeviMap
             public override List<string> GetTextRepresentation(INI_File file)
             {
                 return file.GetTilesetNames();
+            }
+        }
+
+        class SongNamesParser : SectionParser
+        {
+            public override void BeginRead(INI_File file)
+            {
+                file.ResetSongNames();
+            }
+
+            public override void ProcessLine(INI_File file, string line)
+            {
+                file.AddSongName(line);
+            }
+
+            public override List<string> GetTextRepresentation(INI_File file)
+            {
+                return file.GetSongNames();
             }
         }
     }
