@@ -327,7 +327,7 @@ namespace AeviMap
         /// Gets a tileset's display name.
         /// </summary>
         /// <param name="tilesetID">The ID of the tileset.</param>
-        /// <returns>The map's name, if defined. Otherwise, returns a placeholder name.</returns>
+        /// <returns>The tileset's name, if defined. Otherwise, returns a placeholder name.</returns>
         public string GetTilesetName(byte tilesetID)
         {
             if (this.tilesetNames == null || tilesetID >= this.tilesetNames.Count || this.tilesetNames[tilesetID] == null)
@@ -335,7 +335,7 @@ namespace AeviMap
                 return String.Format("??? (ID ${0})", MapEditor.decToHex(tilesetID, 2));
             }
 
-            return this.mapNames[tilesetID];
+            return this.tilesetNames[tilesetID];
         }
 
         /// <summary>
