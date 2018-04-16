@@ -14,8 +14,7 @@ namespace AeviMap
     {
         private GB_ROM ROM;
         private INI_File ini;
-
-        private bool hasCreatedMap = false;
+        
         private byte TilesetID {
             get
             {
@@ -26,14 +25,14 @@ namespace AeviMap
         {
             get
             {
-                return (byte)mapXBox.Value;
+                return (byte)mapYBox.Value;
             }
         }
         private byte MapWidth
         {
             get
             {
-                return (byte)mapYBox.Value;
+                return (byte)mapXBox.Value;
             }
         }
         private byte FillerID {
@@ -92,12 +91,7 @@ namespace AeviMap
                 this.FillerBlockPreview.Image = new Bitmap(this.ROM.GetTileset(this.TilesetID, this.ini).GetBlockBMP(this.FillerID), FillerBlockPreview.Size);
             }
         }
-
-
-        private void CloseDialog(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        
 
         private void CreateMap(object sender, EventArgs e)
         {
@@ -116,19 +110,14 @@ namespace AeviMap
             }
             else
             {
-                this.hasCreatedMap = true;
-                this.CloseDialog(sender, e);
-                return;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+                return; // Don't display the text box
             }
 
             MessageBox.Show(ErrorMessage, "Invalid map!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
         }
-
-
-        public bool HasCreatedMap()
-        {
-            return this.hasCreatedMap;
-        }
+        
 
         public Map GetCreatedMap()
         {

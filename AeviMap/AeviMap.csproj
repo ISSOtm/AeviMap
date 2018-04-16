@@ -52,8 +52,7 @@
     <ApplicationIcon>abv.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>AeviMap.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -95,6 +94,7 @@
     <Compile Include="mapCreator.Designer.cs">
       <DependentUpon>mapCreator.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapHeader.cs" />
     <Compile Include="MusicEnums.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Thread2Function.cs" />

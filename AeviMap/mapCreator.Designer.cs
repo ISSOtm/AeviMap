@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mapCreator));
-            this.cBtn = new System.Windows.Forms.Button();
+            this.createButton = new System.Windows.Forms.Button();
             this.mapXBox = new System.Windows.Forms.NumericUpDown();
             this.mapDGrp = new System.Windows.Forms.GroupBox();
             this.mapHeight = new System.Windows.Forms.Label();
@@ -54,16 +54,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesetPrev)).BeginInit();
             this.SuspendLayout();
             // 
-            // cBtn
+            // createButton
             // 
-            this.cBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cBtn.Location = new System.Drawing.Point(333, 318);
-            this.cBtn.Name = "cBtn";
-            this.cBtn.Size = new System.Drawing.Size(75, 23);
-            this.cBtn.TabIndex = 6;
-            this.cBtn.Text = "Create";
-            this.cBtn.UseVisualStyleBackColor = true;
-            this.cBtn.Click += new System.EventHandler(this.CreateMap);
+            this.createButton.Location = new System.Drawing.Point(333, 318);
+            this.createButton.Name = "createButton";
+            this.createButton.Size = new System.Drawing.Size(75, 23);
+            this.createButton.TabIndex = 6;
+            this.createButton.Text = "Create";
+            this.createButton.UseVisualStyleBackColor = true;
+            this.createButton.Click += new System.EventHandler(this.CreateMap);
             // 
             // mapXBox
             // 
@@ -236,10 +235,10 @@
             this.cancelBtn.TabStop = false;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
-            this.cancelBtn.Click += new System.EventHandler(this.CloseDialog);
             // 
             // mapCreator
             // 
+            this.AcceptButton = this.createButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBtn;
@@ -247,7 +246,7 @@
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.mapDataGrp);
             this.Controls.Add(this.mapDGrp);
-            this.Controls.Add(this.cBtn);
+            this.Controls.Add(this.createButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -269,7 +268,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cBtn;
+        private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.NumericUpDown mapXBox;
         private System.Windows.Forms.GroupBox mapDGrp;
         private System.Windows.Forms.Label mapHeight;

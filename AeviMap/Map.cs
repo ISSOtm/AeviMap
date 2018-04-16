@@ -14,29 +14,246 @@ namespace AeviMap
         private UInt16 addr;
         private bool UnsavedChanges = false;
 
-        private byte flags;
-        private MusicID musicID;
-        private Tileset tileset;
-        private UInt16 MapScriptPtr;
-        private uint height;
-        private uint width;
-        private UInt16 LoadingPtr;
+        private MapHeader Header_Internal = new MapHeader();
+        /// <summary>
+        /// The map's header, collecting all the metadata encoded within the game
+        /// (Metadata only relevant to the manipulation of the map, such as the address, is encoded separately in the Map object)
+        /// </summary>
+        /// <remarks>
+        /// This allows external modifications of the map's header, while allowing them to be atomic.
+        /// ...Of course, this kinda seems to defeat encapsulation, but there's a Header Editor functionality anyways, so lol
+        /// </remarks>
+        internal MapHeader Header
+        {
+            get {
+                return this.Header_Internal.Clone();
+            }
+            set
+            {
+                this.Header_Internal = value;
+            }
+        }
 
-        private byte nbOfInteractions;
-        private Interaction[] Interactions;
+        // Please tell me there's a better way than to do this... monstrosity... of getters and setters.
+        private byte flags {
+            get
+            {
+                return this.Header_Internal.flags;
+            }
+            set
+            {
+                this.Header_Internal.flags = value;
+            }
+        }
+        private MusicID musicID
+        {
+            get
+            {
+                return this.Header_Internal.musicID;
+            }
+            set
+            {
+                this.Header_Internal.musicID = value;
+            }
+        }
+        private Tileset tileset
+        {
+            get
+            {
+                return this.Header_Internal.tileset;
+            }
+            set
+            {
+                this.Header_Internal.tileset = value;
+            }
+        }
+        public byte TilesetID
+        {
+            get
+            {
+                return this.tileset.ID;
+            }
+        }
+        private UInt16 MapScriptPtr
+        {
+            get
+            {
+                return this.Header_Internal.MapScriptPtr;
+            }
+            set
+            {
+                this.Header_Internal.MapScriptPtr = value;
+            }
+        }
+        private uint height
+        {
+            get
+            {
+                return this.Header_Internal.height;
+            }
+            set
+            {
+                this.Header_Internal.height = value;
+            }
+        }
+        private uint width
+        {
+            get
+            {
+                return this.Header_Internal.width;
+            }
+            set
+            {
+                this.Header_Internal.width = value;
+            }
+        }
+        private UInt16 LoadingPtr
+        {
+            get
+            {
+                return this.Header_Internal.LoadingPtr;
+            }
+            set
+            {
+                this.Header_Internal.LoadingPtr = value;
+            }
+        }
 
-        private byte nbOfNPCs;
-        private NPC[] NPCs;
-        private byte nbOfNPCScripts;
-        private UInt16 NPCScriptsPtr;
-        private byte nbOfNPCTiles;
-        private byte[] NPCTileBanks;
-        private UInt16[] NPCTilePtrs;
+        private byte nbOfInteractions
+        {
+            get
+            {
+                return this.Header_Internal.nbOfInteractions;
+            }
+            set
+            {
+                this.Header_Internal.nbOfInteractions = value;
+            }
+        }
+        private Interaction[] Interactions
+        {
+            get
+            {
+                return this.Header_Internal.Interactions;
+            }
+            set
+            {
+                this.Header_Internal.Interactions = value;
+            }
+        }
 
-        private CGBPalette[] OBJPalettes = new CGBPalette[8];
+        private byte nbOfNPCs
+        {
+            get
+            {
+                return this.Header_Internal.nbOfNPCs;
+            }
+            set
+            {
+                this.Header_Internal.nbOfNPCs = value;
+            }
+        }
+        private NPC[] NPCs
+        {
+            get
+            {
+                return this.Header_Internal.NPCs;
+            }
+            set
+            {
+                this.Header_Internal.NPCs = value;
+            }
+        }
+        private byte nbOfNPCScripts
+        {
+            get
+            {
+                return this.Header_Internal.nbOfNPCScripts;
+            }
+            set
+            {
+                this.Header_Internal.nbOfNPCScripts = value;
+            }
+        }
+        private UInt16 NPCScriptsPtr
+        {
+            get
+            {
+                return this.Header_Internal.NPCScriptsPtr;
+            }
+            set
+            {
+                this.Header_Internal.NPCScriptsPtr = value;
+            }
+        }
+        private byte nbOfNPCTiles
+        {
+            get
+            {
+                return this.Header_Internal.nbOfNPCTiles;
+            }
+            set
+            {
+                this.Header_Internal.nbOfNPCTiles = value;
+            }
+        }
+        private byte[] NPCTileBanks
+        {
+            get
+            {
+                return this.Header_Internal.NPCTileBanks;
+            }
+            set
+            {
+                this.Header_Internal.NPCTileBanks = value;
+            }
+        }
+        private UInt16[] NPCTilePtrs
+        {
+            get
+            {
+                return this.Header_Internal.NPCTilePtrs;
+            }
+            set
+            {
+                this.Header_Internal.NPCTilePtrs = value;
+            }
+        }
 
-        private byte nbOfWarpToPoints;
-        private WarpTo[] WarpToPoints;
+        private CGBPalette[] OBJPalettes
+        {
+            get
+            {
+                return this.Header_Internal.OBJPalettes;
+            }
+            set
+            {
+                this.Header_Internal.OBJPalettes = value;
+            }
+        }
+
+        private byte nbOfWarpToPoints
+        {
+            get
+            {
+                return this.Header_Internal.nbOfWarpToPoints;
+            }
+            set
+            {
+                this.Header_Internal.nbOfWarpToPoints = value;
+            }
+        }
+        private WarpTo[] WarpToPoints
+        {
+            get
+            {
+                return this.Header_Internal.WarpToPoints;
+            }
+            set
+            {
+                this.Header_Internal.WarpToPoints = value;
+            }
+        }
 
 
         private byte[,] rawMap;
@@ -52,7 +269,7 @@ namespace AeviMap
             this.rawMap = new byte[this.height, this.width];
             for(byte y = 0; y < this.height; y++)
             {
-                for(byte x = 0; x < this.height; x++)
+                for(byte x = 0; x < this.width; x++)
                 {
                     this.rawMap[y, x] = FillerBlockID;
                 }
@@ -248,37 +465,33 @@ namespace AeviMap
             return new Size((int)this.width, (int)this.height);
         }
 
+        public void Resize(Rectangle NewSize, byte DefaultBlock)
+        {
+            if((byte)NewSize.Height != NewSize.Height || (byte)NewSize.Width != NewSize.Width)
+            {
+                throw new ArgumentOutOfRangeException("The new map size is invalid! Width and height must be within byte range");
+            }
+
+            byte[,] NewRawMap = new byte[NewSize.Height, NewSize.Width];
+            for(byte dy = 0; dy < NewSize.Height; dy++)
+            {
+                var y = NewSize.Y + dy;
+                for(byte dx = 0; dx < NewSize.Width; dx++)
+                {
+                    var x = NewSize.X + dx;
+                    NewRawMap[dy, dx] = (y < 0 || x < 0 || y >= this.height || x >= this.width) ? DefaultBlock : this.rawMap[y,x];
+                }
+            }
+
+            this.rawMap = NewRawMap;
+        }
+
 
         public Map Clone()
         {
             Map Clone = new Map();
-
-            Clone.flags            = flags;
-            Clone.musicID          = musicID;
-            Clone.tileset          = tileset;
-            Clone.MapScriptPtr     = MapScriptPtr;
-            Clone.height           = height;
-            Clone.width            = width;
-            Clone.LoadingPtr       = LoadingPtr;
-
-            Clone.nbOfInteractions = nbOfInteractions;
-            Clone.Interactions     = (Interaction[])Interactions.Clone();
-
-            Clone.nbOfNPCs         = nbOfNPCs;
-            Clone.NPCs             = (NPC[])NPCs.Clone();
-            Clone.nbOfNPCScripts   = nbOfNPCScripts;
-            Clone.NPCScriptsPtr    = NPCScriptsPtr;
-            Clone.nbOfNPCTiles     = nbOfNPCTiles;
-            Clone.NPCTileBanks     = (byte[])NPCTileBanks.Clone();
-            Clone.NPCTilePtrs      = (UInt16[])NPCTilePtrs.Clone();
-
-            Clone.OBJPalettes      = (CGBPalette[])OBJPalettes.Clone();
-
-            Clone.nbOfWarpToPoints = nbOfWarpToPoints;
-            Clone.WarpToPoints     = (WarpTo[])WarpToPoints.Clone();
-
-
-            Clone.rawMap           = (byte[,])this.rawMap.Clone();
+            Clone.Header = this.Header_Internal.Clone();
+            Clone.rawMap = (byte[,])this.rawMap.Clone();
 
             return Clone;
         }

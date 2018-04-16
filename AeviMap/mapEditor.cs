@@ -512,9 +512,9 @@ namespace AeviMap
             }
 
             mapCreator mapCrt = new mapCreator(this.ROM, this.INIFile);
-            mapCrt.ShowDialog();
+            DialogResult MapCreationStatus = mapCrt.ShowDialog();
 
-            if (mapCrt.HasCreatedMap())
+            if (MapCreationStatus == DialogResult.OK)
             {
                 this.NewCustomMap(mapCrt.GetCreatedMap(), mapCrt.CreatedMapName);
             }
@@ -553,10 +553,11 @@ namespace AeviMap
                 this.NewCustomMap(this.LoadedMap.Clone(), String.Format("{0} (copy)", this.INIFile.GetMapName(this.LoadedMapID)));
             }
 
-            headerEditor headEdt = new headerEditor(this.ROM, this.INIFile);
-            headEdt.ShowDialog();
+            headerEditor headEdt = new headerEditor(this.ROM, this.INIFile, this.LoadedMap);
+            DialogResult MapEditionStatus = headEdt.ShowDialog();
+
             // If the modifications haven't been cancelled, reload the map
-            if(headEdt.header != null)
+            if(MapEditionStatus == DialogResult.OK)
             {
                 this.LoadMap(headEdt.map);
             }
